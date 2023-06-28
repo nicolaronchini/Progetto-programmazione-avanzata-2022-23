@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "all-the-cities": "^3.1.0",
     "dobbyscan": "^1.0.0"
   }
 }
