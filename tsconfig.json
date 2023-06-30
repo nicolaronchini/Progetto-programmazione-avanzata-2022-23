@@ -1,0 +1,7 @@
+{
+    "compilerOptions": {
+        "outDir": "nodejs",
+        "rootDir": "typescript"
+    },
+    "exclude": ["node_modules"]
+}
