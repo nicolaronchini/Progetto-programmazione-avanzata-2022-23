@@ -32,18 +32,30 @@ export const segnalazioni = sequelize.define('segnalazione', {
       allowNull: false,
       primaryKey: true
   },
-  datetimes: {
-      type: DataTypes.JSON,
+  timestamp: {
+      type: DataTypes.DATE,
       allowNull: false,
   },
-  latitude: {
+  latitudine: {
       type: DataTypes.FLOAT,
       allowNull: false
   },
-  longitude: {
+  longitudine: {
       type: DataTypes.FLOAT,
       allowNull: false
-  }
+  },
+  tipologia:{
+    type:DataTypes.STRING,
+    allowNull: false
+  },
+  severita: {
+      type:DataTypes.STRING,
+      allowNull: false
+  },
+  stato: {
+    type:DataTypes.STRING,
+    allowNull: false
+  }, 
 }, {
   modelName: 'segnalazione',
   timestamps: false,
@@ -51,16 +63,46 @@ export const segnalazioni = sequelize.define('segnalazione', {
 
 });
 
-export async function test() {
+export const utenti = sequelize.define('utenti', {
+  email: {
+    type:DataTypes.STRING,
+    allowNull: false
+  },
+  nome: {
+    type:DataTypes.STRING,
+    allowNull: false
+  }, 
+  cognome: {
+    type:DataTypes.STRING,
+    allowNull: false
+  }, 
+  ruolo: {
+    type:DataTypes.STRING,
+    allowNull: false
+  },  
+  coins: {
+    type: DataTypes.FLOAT,
+    allowNull: false,
+  },
+  token: {
+    type:DataTypes.INTEGER,
+    allowNull: false
+  }, 
+});
+
+export async function testsegn() {
   const segn = await segnalazioni.findAll();
   console.log(segn.every((segn: any) => segn instanceof segnalazioni));
   console.log("All users:", JSON.stringify(segn, null, 4));
   }
 
-try {
+export async function testutenti() {
+    const usr = await utenti.findAll();
+    console.log(usr.every((segn: any) => segn instanceof segnalazioni));
+    console.log("All users:", JSON.stringify(usr, null, 4));
+    }
 
-console.log(segnalazioni === sequelize.models.segnalazione);
+testsegn();
+testutenti();
 
-test();
 
-} catch (error) {console.log("prova")}

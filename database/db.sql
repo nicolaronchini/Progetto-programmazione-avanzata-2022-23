@@ -16,7 +16,7 @@ CREATE TABLE utenti (
     coins FLOAT NOT NULL,
     token INT(10) NOT NULL
 );
-CREATE VIEW graduatoria AS SELECT nome,cognome,coins FROM utenti; 
+
 INSERT INTO segnalazione (timestamp, latitudine, longitudine, tipologia, severita, stato) VALUES
 ('2022-02-15 14:30', 42.12, 45.13, "buca", "bassa", "PENDING"),
 ('2022-02-15 8:00', 32.12, 65.13, "avvallamento", "alto", "VALIDATED");
