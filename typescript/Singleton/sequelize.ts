@@ -66,7 +66,8 @@ export const segnalazioni = sequelize.define('segnalazione', {
 export const utenti = sequelize.define('utenti', {
   email: {
     type:DataTypes.STRING,
-    allowNull: false
+    allowNull: false,
+    primaryKey: true
   },
   nome: {
     type:DataTypes.STRING,
@@ -87,7 +88,11 @@ export const utenti = sequelize.define('utenti', {
   token: {
     type:DataTypes.INTEGER,
     allowNull: false
-  }, 
+  },
+ }, {
+  modelName: "utenti",
+  timestamps: false,
+  freezeTableName: true
 });
 
 export async function testsegn() {
