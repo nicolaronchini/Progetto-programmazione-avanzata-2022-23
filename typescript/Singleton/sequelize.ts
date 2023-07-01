@@ -95,7 +95,9 @@ export const utenti = sequelize.define('utenti', {
   freezeTableName: true
 });
 
-export async function testsegn() {
+//test
+/*
+  export async function testsegn() {
   const segn = await segnalazioni.findAll();
   console.log(segn.every((segn: any) => segn instanceof segnalazioni));
   console.log("All users:", JSON.stringify(segn, null, 4));
@@ -109,5 +111,5 @@ export async function testutenti() {
 
 testsegn();
 testutenti();
-
+*/
 

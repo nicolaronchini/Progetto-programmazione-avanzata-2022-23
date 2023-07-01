@@ -1,10 +1,9 @@
 import { segnalazioni, utenti } from './Singleton/sequelize';
-import { Sequelize } from 'sequelize';
 
 export async function test(email: string): Promise<boolean> {
-    let user
-    user= await utenti.findByPk(email)
-    return user
+    let user: any; 
+    user = await utenti.findByPk(email);
+    return user;
 }
     
-test('adrianomancini@gmail.com');
+if (test('adrianomancini@gmail.com')) {console.log("Trovato")};
