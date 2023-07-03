@@ -1,22 +1,31 @@
-import { segnalazioni, utenti } from './Singleton/sequelize';
+import { segnalazioni, utenti } from './Modello/model';
+import { Sequelize } from 'sequelize';
 
-/*
-export async function test(email: string): Promise<boolean> {
-    let user: any; 
-    user = await utenti.findByPk(email,{raw:true});
-    //console.log(user.nome)
-    return user;
+export function creaSegnalazioni(): void{
+    segnalazioni.create({
+
+    });
+    //da decrementare i token in base al propretatio della segnalazione
 }
-*/
+
+
+
+
+
+
+
+
+
 
 export async function test(email: string): Promise<Boolean>{
     let user: any; 
+    let flag: Boolean;
+    flag = false;
     user = await utenti.findByPk(email,{raw:true});
     //console.log(user.nome)
-    if (user === null) {console.log("not found");return false}
-    else {console.log("found");return true};
+    if (user === null) {console.log("not found"); console.log(flag);return flag}
+    else {console.log("found"); flag = true; console.log(flag); return true};
 }
 
-//console.log(test('adrianomancinifalso@gmail.com'));
 
 console.log(Boolean(test('adrianomancinifalso@gmail.com')));
