@@ -1,16 +1,15 @@
 import { segnalazioni, utenti } from './Modello/model';
-import { Sequelize } from 'sequelize';
+import { FloatDataType, Sequelize } from 'sequelize';
 
-export function creaSegnalazioni(tipo: string): void{
+export function creaSegnalazioni(req:any): void{
 
     segnalazioni.create({
-        id: 4,
-        timestamp: '2022-05-15 17:30',
-        latitudine: 78.12,
-        longitudine: 20.40,
-        tipologia: tipo,
-        severita: "alta",
-        email: "filippo_bernabucci@gmail.com",
+        timestamp: req.token.time,
+        latitudine: req.token.latitudine,
+        longitudine: req.token.longitudine,
+        tipologia: req.token.tipologia,
+        severita: req.token.severita,
+        email: req.token.email,
         stato: "PENDING"});
 
     /*
@@ -32,7 +31,5 @@ export async function test(email: string): Promise<Boolean>{
     if (user === null) {console.log("not found"); return false}
     else {console.log("found"); return true};
 }
-
-creaSegnalazioni("ciao");
 
 
