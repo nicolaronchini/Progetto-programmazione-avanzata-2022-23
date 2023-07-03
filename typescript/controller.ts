@@ -1,11 +1,29 @@
 import { segnalazioni, utenti } from './Modello/model';
 import { Sequelize } from 'sequelize';
 
-export function creaSegnalazioni(): void{
-    segnalazioni.create({
+export function creaSegnalazioni(tipo: string): void{
 
-    });
-    //da decrementare i token in base al propretatio della segnalazione
+    /*
+    segnalazioni.create({
+        id: 4,
+        timestamp: '2022-05-15 17:30',
+        latitudine: 78.12,
+        longitudine: 20.40,
+        tipologia: tipo,
+        severita: "alta",
+        email: "filippo_bernabucci@gmail.com",
+        stato: "PENDING"});
+    */
+    
+    segnalazioni.create({
+        timestamp: '2021-02-15 14:30',
+        latitudine: 68.42,
+        longitudine: 40.46,
+        tipologia: "buca",
+        severita: "media",
+        email: "ronchini.nicola@outlook.it",
+        stato: "PENDING"});
+    
 }
 
 export async function test(email: string): Promise<Boolean>{
@@ -16,4 +34,6 @@ export async function test(email: string): Promise<Boolean>{
     else {console.log("found"); return true};
 }
 
-    
+creaSegnalazioni("ciao");
+
+

@@ -6,7 +6,8 @@ const sequelize: Sequelize = SequelizeSingleton.getConnection();
 export const segnalazioni = sequelize.define('segnalazione', {
   id: {
       type: DataTypes.INTEGER,
-      allowNull: false,
+      allowNull: true,
+      autoIncrement: true,
       primaryKey: true
   },
   timestamp: {
@@ -29,6 +30,10 @@ export const segnalazioni = sequelize.define('segnalazione', {
       type:DataTypes.STRING,
       allowNull: false
   },
+  email: {
+    type:DataTypes.STRING,
+    allowNull: false
+  }, 
   stato: {
     type:DataTypes.STRING,
     allowNull: false
