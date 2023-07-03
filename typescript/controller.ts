@@ -3,7 +3,6 @@ import { Sequelize } from 'sequelize';
 
 export function creaSegnalazioni(tipo: string): void{
 
-    /*
     segnalazioni.create({
         id: 4,
         timestamp: '2022-05-15 17:30',
@@ -13,8 +12,8 @@ export function creaSegnalazioni(tipo: string): void{
         severita: "alta",
         email: "filippo_bernabucci@gmail.com",
         stato: "PENDING"});
-    */
-    
+
+    /*
     segnalazioni.create({
         timestamp: '2021-02-15 14:30',
         latitudine: 68.42,
@@ -23,7 +22,7 @@ export function creaSegnalazioni(tipo: string): void{
         severita: "media",
         email: "ronchini.nicola@outlook.it",
         stato: "PENDING"});
-    
+    */
 }
 
 export async function test(email: string): Promise<Boolean>{
