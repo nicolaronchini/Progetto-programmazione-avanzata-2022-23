@@ -43,7 +43,8 @@ export const JWT = [
 ];
 
 
-//let tok = jwt.sign({"time":"2021-02-15 14:30","latitudine":68.42,"longitudine":40.46,"tipologia":"buca","severita":"bassa","email":"ronchini.nicola@outlook.it"},process.env.KEY);
-let tok = jwt.sign({"id":1,"severita":"media","email":"ronchini.nicola@outlook.it"},process.env.KEY);
+//let tok = jwt.sign({"time":"2021-02-15 16:35","latitudine":48.42,"longitudine":70.46,"tipologia":"buca","severita":"alta","email":"filippo_bernabucci@outlook.it"},process.env.KEY);
+//let tok = jwt.sign({"email":"ronchini.nicola@outlook.it","dataInizio":"2021-03-15 14:30:00","dataFine":"2023-03-15 14:30:00"},process.env.KEY);
+let tok = jwt.sign({"stato":"VALIDATED","id":[1,6]},process.env.KEY);
 console.log(tok);
 

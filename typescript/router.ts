@@ -21,4 +21,18 @@ app.post('/modifica-segnalazione',Middleware.JWT,(req,res) =>{
     res.send("success");
 });
 
-app.listen(8080);
+app.post('/cancella-segnalazione',Middleware.JWT,(req,res)=>{
+    controller.cancSegnalazioni(req);
+    res.send("success");
+});
+
+app.post('/filtra',Middleware.JWT,(req,res)=>{
+    controller.filtro(req,res);
+});
+
+app.post('/agg-stato',Middleware.JWT,(req,res)=>{
+    controller.agg_stato(req);
+    res.send("success");
+});
+
+app.listen(8080, ()=>{console.log("Stiamo partendo")});
