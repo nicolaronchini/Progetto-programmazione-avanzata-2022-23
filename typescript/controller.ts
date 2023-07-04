@@ -18,7 +18,7 @@ export function cancSegnalazioni(segn:number): void{
 }
 
 export function modSegnalazioni(req:any): void{
-    segnalazioni.update(req.token, {where : {id: req.token.id }});
+    segnalazioni.update(req.token, {where : {id: req.token.id}});
 }
 
 export async function test(email: string): Promise<Boolean>{

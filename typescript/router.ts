@@ -16,4 +16,9 @@ app.post('/crea-segnalazione',Middleware.JWT,(req,res) => {
     res.send("success");
 });
 
+app.post('/modifica-segnalazione',Middleware.JWT,(req,res) =>{
+    controller.modSegnalazioni(req);
+    res.send("success");
+});
+
 app.listen(8080);

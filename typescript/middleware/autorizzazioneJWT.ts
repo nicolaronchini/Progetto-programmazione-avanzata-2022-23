@@ -44,5 +44,6 @@ export const JWT = [
 
 
 //let tok = jwt.sign({"time":"2021-02-15 14:30","latitudine":68.42,"longitudine":40.46,"tipologia":"buca","severita":"bassa","email":"ronchini.nicola@outlook.it"},process.env.KEY);
-//console.log(tok);
+let tok = jwt.sign({"id":1,"severita":"media","email":"ronchini.nicola@outlook.it"},process.env.KEY);
+console.log(tok);
 
