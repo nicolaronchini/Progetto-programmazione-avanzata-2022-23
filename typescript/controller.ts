@@ -11,17 +11,14 @@ export function creaSegnalazioni(req:any): void{
         severita: req.token.severita,
         email: req.token.email,
         stato: "PENDING"});
+}
 
-    /*
-    segnalazioni.create({
-        timestamp: '2021-02-15 14:30',
-        latitudine: 68.42,
-        longitudine: 40.46,
-        tipologia: "buca",
-        severita: "media",
-        email: "ronchini.nicola@outlook.it",
-        stato: "PENDING"});
-    */
+export function cancSegnalazioni(segn:number): void{
+    segnalazioni.destroy({where: { id: segn}, force:true});
+}
+
+export function modSegnalazioni(req:any): void{
+    segnalazioni.update(req.token, {where : {id: req.token.id }});
 }
 
 export async function test(email: string): Promise<Boolean>{
