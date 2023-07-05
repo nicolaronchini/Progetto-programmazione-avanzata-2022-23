@@ -1,6 +1,9 @@
+import { Json } from 'sequelize/types/utils';
 import { segnalazioni, utenti } from './Modello/model';
 import {stats} from './funzioneStat';
 import { Op,Sequelize } from 'sequelize';
+
+var fs = require('fs');
 
 /**
  * Funzione: creaSegnalazioni
@@ -143,6 +146,7 @@ export async function statistichevecchia(req:any,res:any) { //middleware
  * esterno formattato in JSON.
  */
 export async function statistiche() {
+    let Jobj: any = {}
     let tipi: String[] = ["buca","avvallamento"];
     let severita: String[] = ["bassa","media","alta"];
     let stati: String[] = ["PENDING","VALIDATED","REJECTED"];
@@ -151,10 +155,19 @@ export async function statistiche() {
         for (let sev of severita) {
             for (let stato of stati) {
                 num = await stats(tipo,sev,stato);
-                console.log(num);
+                Jobj.push({ "segnalazione" : {
+                                                "tipologia" : tipo, 
+                                                "severità": sev, 
+                                                "stato": stato
+                                            },
+                            "occorrenze": num
+                           })
             }
         }
     }
+
+    let json = JSON.stringify(Jobj)
+    fs.writeFile('statistiche.json', json, 'utf8')
 };  
 
 statistiche();
