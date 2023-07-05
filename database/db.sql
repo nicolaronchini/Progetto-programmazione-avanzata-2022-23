@@ -27,7 +27,7 @@ ALTER TABLE segnalazione
 
 INSERT INTO segnalazione (timestamp, latitudine, longitudine, tipologia, severita, email, stato) VALUES
 ('2022-02-15 14:30', 42.12, 45.13, "buca", "bassa", "ronchini.nicola@outlook.it", "PENDING"),
-('2022-02-15 8:00', 32.12, 65.13, "avvallamento", "alto","filippo_bernabucci@gmail.com", "VALIDATED");
+('2022-02-15 8:00', 32.12, 65.13, "avvallamento", "alta","filippo_bernabucci@gmail.com", "VALIDATED");
 INSERT INTO utenti (email, nome, cognome, ruolo, coins, richiesteVal,token) VALUES
 ("adrianomancini@gmail.com","adriano","mancini", "admin",0.0,0,10),
 ("ronchini.nicola@outlook.it","nicola","ronchini","utente",3.15,4,5),

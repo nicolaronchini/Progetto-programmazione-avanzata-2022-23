@@ -35,4 +35,12 @@ app.post('/agg-stato',Middleware.JWT,(req,res)=>{
     res.send("success");
 });
 
+app.post('/graduatoria',Middleware.JWT,(req,res)=>{
+    controller.graduatoria(req,res);
+});
+
+app.post('/statistiche',Middleware.JWT,(req,res)=>{
+    controller.statistiche();
+});
+
 app.listen(8080, ()=>{console.log("Stiamo partendo")});
