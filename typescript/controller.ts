@@ -41,9 +41,22 @@ export async function filtro(req:any,res:any) {
     }
 };
 
-export function agg_stato(req:any) {
+export async function agg_stato(req:any) {
     segnalazioni.update({stato:req.token.stato}, {where: {id: req.token.id, stato:"PENDING"}});
+    if(req.token.stato == "VALIDATED"){
+
+        let segn : any = await segnalazioni.findAll({where: {id: req.token.id}});
+        let utente : any = await utenti.findAll({where: {email: segn.email}});
+        if(utente.richiesteVal > 10) {utenti.increment({ coins : 0.15 }, {where : {email: segn.email}})}
+        else {utenti.increment({ coins : 0.1 }, {where : {email: segn.email}})}
+    
+    }
 };
+
+
+
+
+
 
 export async function test(email: string): Promise<Boolean>{
     let user: any; 
