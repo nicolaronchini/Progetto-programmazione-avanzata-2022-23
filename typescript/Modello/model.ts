@@ -67,6 +67,10 @@ export const utenti = sequelize.define('utenti', {
     type: DataTypes.FLOAT,
     allowNull: false,
   },
+  richiesteVal: {
+    type:DataTypes.INTEGER,
+    allowNull: false
+  },
   token: {
     type:DataTypes.INTEGER,
     allowNull: false
