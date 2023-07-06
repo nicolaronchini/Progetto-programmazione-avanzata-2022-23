@@ -1,6 +1,7 @@
 import { Json } from 'sequelize/types/utils';
 import { segnalazioni, utenti } from './Modello/model';
 import {stats} from './funzioneStat';
+import {formulaDistanza} from './formulaHaversine';
 import { Op,Sequelize } from 'sequelize';
 
 var fs = require('fs');
@@ -118,26 +119,6 @@ export async function graduatoria(req:any,res:any) { //middleware tipo ordinamen
     res.send(grad_ordinata);
 };
 
-export async function statistichevecchia(req:any,res:any) { //middleware
-    let numPending: any;
-    let numValidated: any;
-    let numRejected: any;
-    if (req.token.tipo && !req.token.severita) {
-        numPending = await segnalazioni.count({where: {tipologia: req.token.tipo,stato:'PENDING'}});
-        numValidated = await segnalazioni.count({where: {tipologia: req.token.tipo,stato:'VALIDATED'}});
-        numRejected = await segnalazioni.count({where: {tipologia: req.token.tipo,stato:'REJECTED'}});
-    }else if (!req.token.tipo && req.token.severita) {
-        numPending = await segnalazioni.count({where: {severita: req.token.severita,stato:'PENDING'}});
-        numValidated = await segnalazioni.count({where: {severita: req.token.severita,stato:'VALIDATED'}});
-        numRejected = await segnalazioni.count({where: {severita: req.token.severita,stato:'REJECTED'}});
-    }else if (req.token.tipo && req.token.severita) {
-        numPending = await segnalazioni.count({where: {tipologia: req.token.tipo,severita: req.token.severita,stato:'PENDING'}});
-        numValidated = await segnalazioni.count({where: {tipologia: req.token.tipo,severita: req.token.severita,stato:'VALIDATED'}});
-        numRejected = await segnalazioni.count({where: {tipologia: req.token.tipo,severita: req.token.severita,stato:'REJECTED'}});
-    }
-    res.send("PENDING: "+ String(numPending) +", VALIDATED: " + String(numValidated) + ", REJECTED:" + String(numRejected));
-};
-
 /**
  * Funzione: statistiche
  * 
@@ -155,6 +136,7 @@ export async function statistiche() {
         for (let sev of severita) {
             for (let stato of stati) {
                 num = await stats(tipo,sev,stato);
+                if (num > 0) {
                 Jobj.push({ "segnalazione" : {
                                                 "tipologia" : tipo, 
                                                 "severità": sev, 
@@ -162,10 +144,35 @@ export async function statistiche() {
                                             },
                             "occorrenze": num
                            })
+                }
             }
         }
     }
 
-    let json = JSON.stringify(Jobj)
+    let json = JSON.stringify(Jobj,null,2)
     fs.writeFileSync('statistiche.json', json, 'utf8')
 };  
+
+export async function ricerca(req:any) {
+    let Jobj: any[] = [];
+    let segn: any;
+    if (req.token.dataInizio) {
+        segn = await segnalazioni.findAll({where: {stato:"VALIDATED",
+                                                   timestamp: {[Op.between]:[req.token.dataInizio,req.token.dataFine]}}});
+    } else {
+        segn = await segnalazioni.findAll({where: {stato:"VALIDATED"}});
+    }
+    for (let val of segn) {
+        let dist = formulaDistanza(req.token.latitudine,req.token.longitudine,val.latitudine,val.longitudine);
+        if (dist < req.token.raggio/1000) {
+            Jobj.push({ "segnalazione" : {
+                "tipologia" : val.tipologia, 
+                "severità": val.severita, 
+                "distanza": dist
+                }
+            })
+        }
+    }
+    let json = JSON.stringify(Jobj,null,2)
+    fs.writeFileSync('filtroPerDistanza.json', json, 'utf8')
+};

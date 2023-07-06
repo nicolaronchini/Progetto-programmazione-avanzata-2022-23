@@ -7,10 +7,6 @@ const app = express();
 
 app.use(express.json());
 
-app.get('/test',Middleware.JWT,(req,res) => {
-    res.send(req.token)
-});
-
 app.post('/crea-segnalazione',Middleware.JWT,(req,res) => {
     controller.creaSegnalazioni(req);
     res.send("success");
@@ -41,6 +37,11 @@ app.post('/graduatoria',Middleware.JWT,(req,res)=>{
 
 app.post('/statistiche',Middleware.JWT,(req,res)=>{
     controller.statistiche();
+    res.send("Success");
+});
+
+app.post('/distanza',Middleware.JWT,(req,res)=>{
+    controller.ricerca(req);
     res.send("Success");
 });
 

@@ -3,3 +3,4 @@ package-lock.json
 .env
 nodejs
 statistiche.json
+filtroPerDistanza.json
