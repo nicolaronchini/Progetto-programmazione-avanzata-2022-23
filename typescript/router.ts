@@ -41,6 +41,7 @@ app.post('/graduatoria',Middleware.JWT,(req,res)=>{
 
 app.post('/statistiche',Middleware.JWT,(req,res)=>{
     controller.statistiche();
+    res.send("Success");
 });
 
 app.listen(8080, ()=>{console.log("Stiamo partendo")});

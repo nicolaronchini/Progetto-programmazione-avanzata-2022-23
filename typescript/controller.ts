@@ -146,7 +146,7 @@ export async function statistichevecchia(req:any,res:any) { //middleware
  * esterno formattato in JSON.
  */
 export async function statistiche() {
-    let Jobj: any = {}
+    let Jobj: any[] = []
     let tipi: String[] = ["buca","avvallamento"];
     let severita: String[] = ["bassa","media","alta"];
     let stati: String[] = ["PENDING","VALIDATED","REJECTED"];
@@ -167,7 +167,5 @@ export async function statistiche() {
     }
 
     let json = JSON.stringify(Jobj)
-    fs.writeFile('statistiche.json', json, 'utf8')
+    fs.writeFileSync('statistiche.json', json, 'utf8')
 };  
-
-statistiche();
