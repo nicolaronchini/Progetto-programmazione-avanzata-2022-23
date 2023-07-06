@@ -1,7 +1,9 @@
 import { Json } from 'sequelize/types/utils';
 import { segnalazioni, utenti } from './Modello/model';
-import {stats} from './funzioneStat';
-import {formulaDistanza} from './formulaHaversine';
+import {stats} from './funzioniAusiliarie/funzioneStat';
+import {creazione} from './funzioniAusiliarie/creaSegn';
+import {formulaDistanza} from './funzioniAusiliarie/formulaHaversine';
+import { decrementa } from './funzioniAusiliarie/decrementaToken';
 import { Op,Sequelize } from 'sequelize';
 
 var fs = require('fs');
@@ -16,15 +18,8 @@ var fs = require('fs');
  * @param req body del token JWT utilizzato per l'autenticazione
  */
 export function creaSegnalazioni(req:any): void{
-
-    segnalazioni.create({
-        timestamp: req.token.time,
-        latitudine: req.token.latitudine,
-        longitudine: req.token.longitudine,
-        tipologia: req.token.tipologia,
-        severita: req.token.severita,
-        email: req.token.email,
-        stato: "PENDING"});
+    creazione(req);
+    decrementa(req.token.email);
 }
 
 /**

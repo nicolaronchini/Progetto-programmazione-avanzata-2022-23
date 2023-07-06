@@ -1,4 +1,4 @@
-import { segnalazioni, utenti } from './Modello/model';
+import { segnalazioni, utenti } from '../Modello/model';
 import { Sequelize } from 'sequelize';
 
 /**

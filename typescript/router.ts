@@ -1,13 +1,14 @@
 var express = require('express');
 import * as controller from './controller'
 import * as Middleware from './middleware/autorizzazioneJWT'
+import * as Controlli from './middleware/middleware_function';
 const jwt = require('jsonwebtoken');
 
 const app = express();
 
 app.use(express.json());
 
-app.post('/crea-segnalazione',Middleware.JWT,(req,res) => {
+app.post('/crea-segnalazione',Middleware.JWT,Controlli.Verifica,(req,res) => {
     controller.creaSegnalazioni(req);
     res.send("success");
 });
@@ -26,7 +27,7 @@ app.post('/filtra',Middleware.JWT,(req,res)=>{
     controller.filtro(req,res);
 });
 
-app.post('/agg-stato',Middleware.JWT,(req,res)=>{
+app.post('/agg-stato',Middleware.JWT,Controlli.verificaAdmin,(req,res)=>{
     controller.agg_stato(req);
     res.send("success");
 });
