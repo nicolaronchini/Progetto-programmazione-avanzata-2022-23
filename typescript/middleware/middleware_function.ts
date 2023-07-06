@@ -34,20 +34,21 @@ export async function verificaNumToken(req:any,res:any,next: any) {
 }
 
 /**
- * Funzione: verificaNumToken
+ * Funzione: verificaAdmin
  *
- * Middleware che si occupa della verifica del numero
- * di token di un utente. 
+ * Middleware che si occupa della verifica dell'admin
  * 
  * @param req token JWT preso in ingresso
- * @param res restituzione dell'eventuale errore
- * @param next se l'utente ha abbastanza token passa alla prossima funzione
+ * @param res restituzione dell'eventuale errore se non si è admin
+ * @param next se la chiamata è effettutata dall'admin passa alla prossima funzione
  */
 export async function verificaAdmin(req:any,res:any,next: any) {
     let utente: any = await utenti.findAll({where: {email:req.token.email}})
     if (utente[0].dataValues.ruolo === "admin") next();
     else res.send("Non hai i permessi");
 };
+
+//check mail
 
 export const Verifica = [
     verificaEsistenza,
