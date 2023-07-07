@@ -4,7 +4,10 @@ package-lock.json
 nodejs
 statistiche.json
 statistiche.csv
+statistiche.pdf
 filtroPerDistanza.json
 filtroPerDistanza.csv
+filtroPerDistanza.pdf
 clusters.json
 clusters.csv
+clusters.pdf

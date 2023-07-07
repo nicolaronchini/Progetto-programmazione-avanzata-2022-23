@@ -1,15 +1,39 @@
 import { jsPDF } from "jspdf";
 
-var employees = [
-    {"firstName":"John", "lastName":"Doe"}, 
-    {"firstName":"Anna", "lastName":"Smith"},
-    {"firstName":"Peter", "lastName":"Jones"}
-];
-
-var doc = new jsPDF();
-employees.forEach(function(employee, i){
+/**
+ * 
+ * @param data 
+ */
+export async function StatsPDF(data:any) {
+    var doc = new jsPDF();
+    data.forEach(function(segnalazione, i){
     doc.text(
-        "First Name: " + employee.firstName +
-        "Last Name: " + employee.lastName,20, 10 + (i * 10), );
-});
-doc.save('Test.pdf');
+        "Tipologia: " + segnalazione.segnalazione.tipologia +
+        "\nSeverità: " + segnalazione.segnalazione.severità + 
+        "\nStato: " + segnalazione.segnalazione.stato + 
+        "\nOccorrenze di questo tipo di segnalazioni: " + segnalazione.occorrenze + "\n",20, 10 + (i * 30), );
+    });
+    doc.save("statistiche.pdf");
+};
+
+export async function DistanzaPDF(data:any) {
+    var doc = new jsPDF();
+    data.forEach(function(segnalazione, i){
+    doc.text(
+        "Tipologia: " + segnalazione.segnalazione.tipologia +
+        "\nSeverità: " + segnalazione.segnalazione.severità + 
+        "\nDistanza: " + segnalazione.segnalazione.distanza + "\n",20, 10 + (i * 30), );
+    });
+    doc.save("filtroPerDistanza.pdf");
+};
+
+export async function ClusterPDF(data:any) {
+    var doc = new jsPDF();
+    data.forEach(function(segnalazione, i){
+    doc.text(
+        "Tipologia: " + segnalazione.segnalazione.tipologia +
+        "\nSeverità: " + segnalazione.segnalazione.severità + 
+        "\nNumero cluster: " + segnalazione.segnalazione.numeroCluster + "\n",20, 10 + (i * 30), );
+    });
+    doc.save("clusters.pdf");
+};

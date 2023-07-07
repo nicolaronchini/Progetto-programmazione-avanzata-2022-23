@@ -1,13 +1,6 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
 
-/*
-var requestTime = function (req, res, next) {
-    req.requestTime = Date.now();
-    next();
-  };
-*/
-
 export function checkHeader(req, res, next){
     const authHeader = req.headers.authorization;
     if (authHeader) {
@@ -50,8 +43,8 @@ export const JWT = [
 //let tok = jwt.sign({"stato":"VALIDATED","id":[10,11,14],"email":"adrianomancini@gmail.com"},process.env.KEY);
 //let tok = jwt.sign({"ordinamento":"ASC"},process.env.KEY);
 //let tok = jwt.sign({"tipo":"avvallamento"},process.env.KEY);
-//let tok = jwt.sign({"latitudine":40,"longitudine":12,"raggio":1000000,"dataInizio":"2021-03-15 14:30:00","dataFine":"2023-03-15 14:30:00","formato":"csv"},process.env.KEY);
-let tok = jwt.sign({"raggio":1000,"formato":"csv"},process.env.KEY);
+//let tok = jwt.sign({"latitudine":40,"longitudine":12,"raggio":1000000,"dataInizio":"2021-03-15 14:30:00","dataFine":"2023-03-15 14:30:00","formato":"pdf"},process.env.KEY);
+let tok = jwt.sign({"raggio":1000,"formato":"pdf"},process.env.KEY);
 //let tok = jwt.sign({"formato":"csv"},process.env.KEY);
 console.log(tok);
 

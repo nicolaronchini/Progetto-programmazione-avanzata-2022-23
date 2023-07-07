@@ -3,6 +3,7 @@ import { segnalazioni, utenti } from './Modello/model';
 import {stats} from './funzioniAusiliarie/funzioneStat';
 import {creazione} from './funzioniAusiliarie/creaSegn';
 import * as CSV from './funzioniAusiliarie/creazioneCSV';
+import * as PDF from './funzioniAusiliarie/creaPDF'
 import {formulaDistanza} from './funzioniAusiliarie/formulaHaversine';
 import { decrementa } from './funzioniAusiliarie/decrementaToken';
 import { Op,Sequelize } from 'sequelize';
@@ -150,7 +151,10 @@ export async function statistiche(req:any) {
     if (req.token.formato === 'JSON') {
         let json = JSON.stringify(Jobj,null,2)
         fs.writeFileSync('statistiche.json', json, 'utf8')
-    } else if (req.token.formato === 'csv') CSV.creaCSVStats("statistiche.csv",Jobj);
+    } else if (req.token.formato === 'csv') 
+        {CSV.creaCSVStats("statistiche.csv",Jobj);}
+    else if (req.token.formato === 'pdf') 
+        {PDF.StatsPDF(Jobj)}
 };  
 
 /**
@@ -187,6 +191,7 @@ export async function ricerca(req:any) {
         let json = JSON.stringify(Jobj,null,2)
         fs.writeFileSync('filtroPerDistanza.json', json, 'utf8')
     } else if (req.token.formato === 'csv') CSV.creaCSVRicerca("filtroPerDistanza.csv",Jobj);
+    else if (req.token.formato === 'pdf') PDF.DistanzaPDF(Jobj);
 };
 
 /**
@@ -225,4 +230,5 @@ export async function clustering(req:any) {
         let json = JSON.stringify(Jobj,null,2)
         fs.writeFileSync('clusters.json', json, 'utf8')
     } else if (req.token.formato === 'csv') CSV.creaCSVClustering("clusters.csv",Jobj);
+    else if (req.token.formato === 'pdf') PDF.ClusterPDF(Jobj);
 };
