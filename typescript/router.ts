@@ -58,7 +58,7 @@ app.post('/graduatoria',Middleware.JWT,(req,res)=>{
 /**
  * Richiesta per la creazione di un file con le statistiche delle segnalazioni
  */
-app.post('/statistiche',Middleware.JWT,(req,res)=>{
+app.post('/statistiche',Middleware.JWT,Controlli.checkMail,Controlli.verificaEsistenza,(req,res)=>{
     controller.statistiche(req);
     res.send("Success");
 });

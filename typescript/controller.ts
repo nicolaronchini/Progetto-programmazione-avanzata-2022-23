@@ -84,7 +84,7 @@ export async function filtro(req:any,res:any) { //middleware data inzio e data d
  * 
  * @param req body del token JWT utilizzato per l'autenticazione
 */
-export async function agg_stato(req:any) {  //da mettere i middleware per admin e stato
+export async function agg_stato(req:any) {  //da mettere i middleware per admin e stato e id
     segnalazioni.update({stato:req.token.stato}, {where: {id: req.token.id, stato:"PENDING"}});
     if(req.token.stato == "VALIDATED"){
         let segn : any = await segnalazioni.findAll({where: {id: req.token.id}});
@@ -107,7 +107,7 @@ export async function agg_stato(req:any) {  //da mettere i middleware per admin 
  * @param req body del token JWT utilizzato per l'autenticazione
  * @param res return della graduatoria ordinata
  */
-export async function graduatoria(req:any,res:any) { //middleware tipo ordinamento
+export async function graduatoria(req:any,res:any) { 
     let grad_ordinata: any;
     grad_ordinata = await utenti.findAll({
         attributes: {exclude: ['email','ruolo','richiesteVal','token']},
@@ -167,7 +167,7 @@ export async function statistiche(req:any) {
  * 
  * @param req body del token JWT utilizzato per l'autenticazione
  */
-export async function ricerca(req:any) {
+export async function ricerca(req:any) { //check lat long 
     let Jobj: any[] = [];
     let segn: any;
     if (req.token.dataInizio) {
@@ -202,7 +202,7 @@ export async function ricerca(req:any) {
  * 
  * @param req body del token JWT utilizzato per l'autenticazione
  */
-export async function clustering(req:any) {
+export async function clustering(req:any) { //middleware raggio >0
     let Jobj: any[] = [];
     let tipi: String[] = ["buca","avvallamento"];
     let severita: String[] = ["bassa","media","alta"];

@@ -72,7 +72,7 @@ export const JWT = [
 //let tok = jwt.sign({"ordinamento":"ASC"},process.env.KEY);
 //let tok = jwt.sign({"tipo":"avvallamento"},process.env.KEY);
 //let tok = jwt.sign({"latitudine":40,"longitudine":12,"raggio":1000000,"dataInizio":"2021-03-15 14:30:00","dataFine":"2023-03-15 14:30:00","formato":"pdf"},process.env.KEY);
-let tok = jwt.sign({"raggio":1000,"formato":"pdf"},process.env.KEY);
-//let tok = jwt.sign({"formato":"csv"},process.env.KEY);
+//let tok = jwt.sign({"raggio":1000,"formato":"pdf"},process.env.KEY);
+let tok = jwt.sign({"formato":"csv"},process.env.KEY);
 console.log(tok);
 
