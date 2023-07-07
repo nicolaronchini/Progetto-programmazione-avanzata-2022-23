@@ -1,8 +1,11 @@
 import { DataTypes, Sequelize } from "sequelize";
 import { SequelizeSingleton } from "../Singleton/sequelize";
 
-const sequelize: Sequelize = SequelizeSingleton.getConnection();
+const sequelize: Sequelize = SequelizeSingleton.connessione();
 
+/**
+ * Creazione del modello per le segnalazioni di sequelize.
+ */
 export const segnalazioni = sequelize.define('segnalazione', {
   id: {
       type: DataTypes.INTEGER,
@@ -45,6 +48,9 @@ export const segnalazioni = sequelize.define('segnalazione', {
 
 });
 
+/**
+ * Creazione del modello per gli utenti di sequelize.
+ */
 export const utenti = sequelize.define('utenti', {
   email: {
     type:DataTypes.STRING,

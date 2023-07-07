@@ -1,8 +1,11 @@
 import { jsPDF } from "jspdf";
 
 /**
+ * Funzione: StatsPDF
  * 
- * @param data 
+ * Funzione adibita alla creazione del file pdf per la funzione statistiche() del controller
+ * 
+ * @param data oggetto JSON contenente i dati da visualizzare
  */
 export async function StatsPDF(data:any) {
     var doc = new jsPDF();
@@ -16,6 +19,13 @@ export async function StatsPDF(data:any) {
     doc.save("statistiche.pdf");
 };
 
+/**
+ * Funzione: DistanzaPDF
+ * 
+ * Funzione adibita alla creazione del file pdf per la funzione ricerca() del controller
+ * 
+ * @param data oggetto JSON contenente i dati da visualizzare
+ */
 export async function DistanzaPDF(data:any) {
     var doc = new jsPDF();
     data.forEach(function(segnalazione, i){
@@ -27,6 +37,13 @@ export async function DistanzaPDF(data:any) {
     doc.save("filtroPerDistanza.pdf");
 };
 
+/**
+ * Funzione: ClusterPDF
+ * 
+ * Funzione adibita alla creazione del file pdf per la funzione clustering() del controller
+ * 
+ * @param data oggetto JSON contenente i dati da visualizzare
+ */
 export async function ClusterPDF(data:any) {
     var doc = new jsPDF();
     data.forEach(function(segnalazione, i){
