@@ -2,6 +2,7 @@ import { Json } from 'sequelize/types/utils';
 import { segnalazioni, utenti } from './Modello/model';
 import {stats} from './funzioniAusiliarie/funzioneStat';
 import {creazione} from './funzioniAusiliarie/creaSegn';
+import * as CSV from './funzioniAusiliarie/creazioneCSV';
 import {formulaDistanza} from './funzioniAusiliarie/formulaHaversine';
 import { decrementa } from './funzioniAusiliarie/decrementaToken';
 import { Op,Sequelize } from 'sequelize';
@@ -120,9 +121,11 @@ export async function graduatoria(req:any,res:any) { //middleware tipo ordinamen
  * 
  * Funzione adibita al calcolo delle statistiche per tutte le possibili
  * combinazioni delle segnalazioni con conseguente scrittura in un file 
- * esterno formattato in JSON.
+ * esterno.
+ * 
+ * @param req body del token JWT utilizzato per l'autenticazione
  */
-export async function statistiche() {
+export async function statistiche(req:any) {
     let Jobj: any[] = []
     let tipi: String[] = ["buca","avvallamento"];
     let severita: String[] = ["bassa","media","alta"];
@@ -144,9 +147,10 @@ export async function statistiche() {
             }
         }
     }
-
-    let json = JSON.stringify(Jobj,null,2)
-    fs.writeFileSync('statistiche.json', json, 'utf8')
+    if (req.token.formato === 'JSON') {
+        let json = JSON.stringify(Jobj,null,2)
+        fs.writeFileSync('statistiche.json', json, 'utf8')
+    } else if (req.token.formato === 'csv') CSV.creaCSVStats("statistiche.csv",Jobj);
 };  
 
 /**
@@ -172,15 +176,17 @@ export async function ricerca(req:any) {
         let dist = formulaDistanza(req.token.latitudine,req.token.longitudine,val.latitudine,val.longitudine);
         if (dist < req.token.raggio/1000) {
             Jobj.push({ "segnalazione" : {
-                "tipologia" : val.tipologia, 
-                "severità": val.severita, 
-                "distanza": dist
+                                "tipologia" : val.tipologia, 
+                                "severità": val.severita, 
+                                "distanza": dist
                 }
             })
         }
     }
-    let json = JSON.stringify(Jobj,null,2)
-    fs.writeFileSync('filtroPerDistanza.json', json, 'utf8')
+    if (req.token.formato === 'JSON') {
+        let json = JSON.stringify(Jobj,null,2)
+        fs.writeFileSync('filtroPerDistanza.json', json, 'utf8')
+    } else if (req.token.formato === 'csv') CSV.creaCSVRicerca("filtroPerDistanza.csv",Jobj);
 };
 
 /**
@@ -215,6 +221,8 @@ export async function clustering(req:any) {
             }
         }
     }
-    let json = JSON.stringify(Jobj,null,2)
-    fs.writeFileSync('clusters.json', json, 'utf8')
+    if (req.token.formato === 'JSON') {
+        let json = JSON.stringify(Jobj,null,2)
+        fs.writeFileSync('clusters.json', json, 'utf8')
+    } else if (req.token.formato === 'csv') CSV.creaCSVClustering("clusters.csv",Jobj);
 };

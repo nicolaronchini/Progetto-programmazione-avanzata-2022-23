@@ -37,7 +37,7 @@ app.post('/graduatoria',Middleware.JWT,(req,res)=>{
 });
 
 app.post('/statistiche',Middleware.JWT,(req,res)=>{
-    controller.statistiche();
+    controller.statistiche(req);
     res.send("Success");
 });
 
