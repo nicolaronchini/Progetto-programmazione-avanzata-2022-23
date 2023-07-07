@@ -46,4 +46,9 @@ app.post('/distanza',Middleware.JWT,(req,res)=>{
     res.send("Success");
 });
 
+app.post('/cluster',Middleware.JWT,(req,res)=>{
+    controller.clustering(req);
+    res.send("Success");
+});
+
 app.listen(8080, ()=>{console.log("Stiamo partendo")});

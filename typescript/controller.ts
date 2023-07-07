@@ -7,6 +7,7 @@ import { decrementa } from './funzioniAusiliarie/decrementaToken';
 import { Op,Sequelize } from 'sequelize';
 
 var fs = require('fs');
+var dobbyscan = require('dobbyscan');
 
 /**
  * Funzione: creaSegnalazioni
@@ -148,6 +149,16 @@ export async function statistiche() {
     fs.writeFileSync('statistiche.json', json, 'utf8')
 };  
 
+/**
+ * Funzione: ricerca
+ * 
+ * Questa funzione restituisce le segnalazioni VALIDATED per 
+ * tipologia ed intensità utilizzando una posizione ed un
+ * raggio scelti dall'utente ed eventualmente un intervallo
+ * di date.
+ * 
+ * @param req body del token JWT utilizzato per l'autenticazione
+ */
 export async function ricerca(req:any) {
     let Jobj: any[] = [];
     let segn: any;
@@ -170,4 +181,40 @@ export async function ricerca(req:any) {
     }
     let json = JSON.stringify(Jobj,null,2)
     fs.writeFileSync('filtroPerDistanza.json', json, 'utf8')
+};
+
+/**
+ * Funzione: clustering
+ * 
+ * Funzione adibita alla clusterizzazione delle segnalazioni VALIDATED
+ * in base alla tipologia ed alla severità.
+ * 
+ * @param req body del token JWT utilizzato per l'autenticazione
+ */
+export async function clustering(req:any) {
+    let Jobj: any[] = [];
+    let tipi: String[] = ["buca","avvallamento"];
+    let severita: String[] = ["bassa","media","alta"];
+    for (let tipo of tipi) {
+        for (let sev of severita) {
+            let segn : any = await segnalazioni.findAll({where: {stato:"VALIDATED",
+                                                                 tipologia: tipo,
+                                                                 severita: sev}});
+            let coordinate: [number, number][] = [];
+            if (segn.length != 0) {
+                for (let val of segn) {
+                    coordinate.push([val.dataValues.longitudine,val.dataValues.latitudine]);
+                }
+                let clusters = dobbyscan(coordinate, req.token.raggio/1000);
+                Jobj.push({ "segnalazione" : {
+                    "tipologia" : tipo, 
+                    "severità": sev, 
+                    "numeroCluster": clusters.length
+                    }
+                })
+            }
+        }
+    }
+    let json = JSON.stringify(Jobj,null,2)
+    fs.writeFileSync('clusters.json', json, 'utf8')
 };
