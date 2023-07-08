@@ -377,4 +377,3 @@ export async function checkEmailCanc(req:any,res:any,next:any) {
         else res.send("Non hai i permessi per cancellare questa segnalazione");
 };
 
-//funzione refill token
