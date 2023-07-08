@@ -231,3 +231,19 @@ export async function clustering(req:any) { //middleware raggio >0
     } else if (req.token.formato === 'csv') CSV.creaCSVClustering("clusters.csv",Jobj);
     else if (req.token.formato === 'pdf') PDF.ClusterPDF(Jobj);
 };
+
+/**
+ * Funzione: refill
+ * 
+ * Funzione che si occupa di ridare i token agli utenti che li hanno terminati
+ * 
+ * @param req body del token JWT utilizzato per l'autenticazione
+ * @param res invio di eventuale errori
+ */
+export async function refill(req:any,res:any) {
+    if (req.token.utente) {
+        let user: any = await utenti.findOne({where: {email:req.token.utente}})
+        if (user != null && user.token === 0) utenti.increment({token:10},{where:{email:req.token.utente}});
+        else res.send("Utente non trovato o con token già assegnati")
+    } else res.send("Campo utente non specificato")
+};

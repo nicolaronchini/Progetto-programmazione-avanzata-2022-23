@@ -4,17 +4,19 @@ import { Sequelize } from 'sequelize';
 /**
  * Funzione: verificaEsistenza
  *
- * Funzione che si occupa della verifica dell'esistenza di un utente
- * nel database. 
+ * Funzione che si occupa di verificare la presenza del campo email nel token
+ * e la relativa esistenza dell'utente nel database. 
  * 
  * @param req token JWT preso in ingresso
  * @param res restituzione dell'eventuale errore
  * @param next se non viene trovato nessun errore passa alla prossima funzione
  */
 export async function verificaEsistenza(req:any,res:any,next: any) {
-    let esistenza: any = await utenti.findOne({where: {email:req.token.email}})
-    if (esistenza != null) next();
-    else res.send("Utente non esistente");
+    if (req.token.email) {
+        let esistenza: any = await utenti.findOne({where: {email:req.token.email}})
+        if (esistenza != null) next();
+        else res.send("Utente non esistente");
+    } else res.send("Mail non specificata")
 }
 
 /**
@@ -46,21 +48,6 @@ export async function verificaAdmin(req:any,res:any,next: any) {
     let utente: any = await utenti.findAll({where: {email:req.token.email}})
     if (utente[0].dataValues.ruolo === "admin") next();
     else res.send("Non hai i permessi");
-};
-
-/**
- * Funzione: checkMail
- * 
- * Funzione che si occupa di verificare la presenza del campo "mail"
- * nel token JWT.
- * 
- * @param req token JWT preso in ingresso
- * @param res restituzione dell'eventuale errore se non è presente la mail nel JWT
- * @param next se non viene trovato nessun errore passa alla prossima funzione
- */
-export function checkMail(req:any,res:any,next:any) {
-    if (req.token.email) next()
-    else res.send("Non è stata inserita la mail")
 };
 
 /**
@@ -158,9 +145,9 @@ export async function checkIdValAdmin(req:any,res:any,next:any) {
  * @param next se non viene trovato nessun errore passa alla prossima funzione 
  */
 export function checkData(req:any,res:any,next:any) {
-    if (req.token.time) {
+    if (req.token.timestamp) {
         const regex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
-        if (regex.test(req.token.time)) next();
+        if (regex.test(req.token.timestamp)) next();
             else res.send("Formato della data non riconosciuto")
     } else next()
 };
@@ -205,14 +192,189 @@ export function checkFormato(req:any,res:any,next:any){
     else res.send("Formato non specificato")
 }
 
-//check tipologia severita lat long raggio
-//check mail o admin
-// sia che sia vuoto o no
+/**
+ * Funzione: CheckTipologia
+ * 
+ * Funzione che verifica la presenza del campo tipologia ed il contenuto.
+ * 
+ * @param req token JWT preso in ingresso
+ * @param res restituzione dell'eventuale errore se la tipologia è sbagliata o non specificata
+ * @param next se non viene trovato nessun errore passa alla prossima funzione
+ */
+export function checkTipologia(req:any,res:any,next:any){
+    if (req.token.tipologia) {
+        if (req.token.tipologia === "buca" || req.token.tipologia === "avvallamento") next()
+            else res.send("Tipologia non esistente")
+    }
+    else res.send("Tipologia non specificata")
+}
 
-export const Verifica = [
-    verificaEsistenza,
-    verificaNumToken
-];
+/**
+ * Funzione: CheckSeverita
+ * 
+ * Funzione che verifica la presenza del campo severità ed il contenuto.
+ * 
+ * @param req token JWT preso in ingresso
+ * @param res restituzione dell'eventuale errore se la severità è sbagliata o non specificata
+ * @param next se non viene trovato nessun errore passa alla prossima funzione
+ */
+export function checkSeverita(req:any,res:any,next:any){
+    if (req.token.severita) {
+        if (req.token.severita === "bassa" || req.token.severita === "media" || req.token.severita === "alta") next()
+            else res.send("Severità non esistente")
+    }
+    else res.send("Severità non specificata")
+}
 
+/**
+ * Funzione: CheckLatitudine
+ * 
+ * Funzione che verifica la presenza del campo latitudine e la sua correttezza.
+ * 
+ * @param req token JWT preso in ingresso
+ * @param res restituzione dell'eventuale errore se la latitudine è sbagliata o non specificata
+ * @param next se non viene trovato nessun errore passa alla prossima funzione
+ */
+export function checkLatitudine(req:any,res:any,next:any){
+    if (req.token.latitudine) {
+        if (req.token.latitudine <= 90 || req.token.latitudine >= -90) next()
+            else res.send("Latitudine non valida")
+    }
+    else res.send("Latitudine non specificata")
+}
+
+/**
+ * Funzione: CheckLongitudine
+ * 
+ * Funzione che verifica la presenza del campo longitudine e la sua correttezza.
+ * 
+ * @param req token JWT preso in ingresso
+ * @param res restituzione dell'eventuale errore se la longitudine è sbagliata o non specificata
+ * @param next se non viene trovato nessun errore passa alla prossima funzione
+ */
+export function checkLongitudine(req:any,res:any,next:any){
+    if (req.token.longitudine) {
+        if (req.token.longitudine <= 180 || req.token.longitudine >= -180) next()
+            else res.send("Longitudine non valida")
+    }
+    else res.send("Longitudine non specificata")
+};
+
+/**
+ * Funzione: campiNonAcc
+ * 
+ * Funzione che si occupa di verificare che l'utente non cambi 
+ * campi non accessibili.
+ * 
+ * @param req token JWT preso in ingresso
+ * @param res restituzione dell'eventuale errore se l'utente cerca di modificare campi proibiti
+ * @param next se non viene trovato nessun errore passa alla prossima funzione
+ */
+export async function campiNonAcc(req:any,res:any,next:any) {
+    let istanza : any = await segnalazioni.findOne({where: {id:req.token.id}})
+    if (req.token.email != istanza.email || req.token.stato) res.send("Non hai i permessi per modificare questi campi")
+        else next();
+};
+
+/**
+ * Funzione: ModTipologia
+ * 
+ * Funzione che verifica la presenza del campo tipologia ed il contenuto.
+ * 
+ * @param req token JWT preso in ingresso
+ * @param res restituzione dell'eventuale errore se la tipologia è sbagliata
+ * @param next se non viene trovato nessun errore passa alla prossima funzione
+ */
+export function ModTipologia(req:any,res:any,next:any){
+    if (req.token.tipologia) {
+        if (req.token.tipologia === "buca" || req.token.tipologia === "avvallamento") next()
+            else res.send("Tipologia non esistente")
+    }
+    else next()
+}
+
+/**
+ * Funzione: ModSeverita
+ * 
+ * Funzione che verifica il contenuto del campo severità.
+ * 
+ * @param req token JWT preso in ingresso
+ * @param res restituzione dell'eventuale errore se la severità è sbagliata 
+ * @param next se non viene trovato nessun errore passa alla prossima funzione
+ */
+export function ModSeverita(req:any,res:any,next:any){
+    if (req.token.severita) {
+        if (req.token.severita === "bassa" || req.token.severita === "media" || req.token.severita === "alta") next()
+            else res.send("Severità non esistente")
+    }
+    else next()
+}
+
+/**
+ * Funzione: ModLatitudine
+ * 
+ * Funzione che verifica il contenuto del campo latitudine.
+ * 
+ * @param req token JWT preso in ingresso
+ * @param res restituzione dell'eventuale errore se la latitudine è sbagliata 
+ * @param next se non viene trovato nessun errore passa alla prossima funzione
+ */
+export function ModLatitudine(req:any,res:any,next:any){
+    if (req.token.latitudine) {
+        if (req.token.latitudine <= 90 || req.token.latitudine >= -90) next()
+            else res.send("Latitudine non valida")
+    }
+    else next()
+}
+
+/**
+ * Funzione: ModLongitudine
+ * 
+ * Funzione che verifica la presenza del campo longitudine e la sua correttezza.
+ * 
+ * @param req token JWT preso in ingresso
+ * @param res restituzione dell'eventuale errore se la longitudine è sbagliata
+ * @param next se non viene trovato nessun errore passa alla prossima funzione
+ */
+export function ModLongitudine(req:any,res:any,next:any){
+    if (req.token.longitudine) {
+        if (req.token.longitudine <= 180 || req.token.longitudine >= -180) next()
+            else res.send("Longitudine non valida")
+    }
+    else next()
+}
+
+/**
+ * Funzione: checkRaggio
+ * 
+ * Funzione che verifica la presenza del campo raggio e la sua correttezza.
+ * 
+ * @param req token JWT preso in ingresso
+ * @param res restituzione dell'eventuale errore se il raggio non è presente o minore di zero
+ * @param next se non viene trovato nessun errore passa alla prossima funzione
+ */
+export function checkRaggio(req:any,res:any,next:any){
+    if (req.token.raggio) {
+        if (req.token.raggio > 0) next()
+            else res.send("Raggio non valido")
+    }
+    else res.send("Raggio non presente")
+}
+
+/**
+ * Funzione: checkEmailCanc
+ * 
+ * Funzione che si occupa della verifica della mail per la cancellazione delle segnalazioni
+ * 
+ * @param req token JWT preso in ingresso
+ * @param res restituzione dell'errore in caso che non si abbiano i permessi per la cancellazione
+ * @param next se non viene trovato nessun errore passa alla prossima funzione
+ */
+export async function checkEmailCanc(req:any,res:any,next:any) {
+    let istanza : any = await segnalazioni.findOne({where: {id:req.token.id}})
+    let utente: any = await utenti.findAll({where: {email:req.token.email}})
+    if (req.token.email === istanza.email || utente[0].dataValues.ruolo === "admin") next()
+        else res.send("Non hai i permessi per cancellare questa segnalazione");
+};
 
 //funzione refill token

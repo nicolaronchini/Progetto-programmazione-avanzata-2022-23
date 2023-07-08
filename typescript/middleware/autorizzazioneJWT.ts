@@ -57,16 +57,18 @@ export function verifyAndAuthenticate(req,res,next){
       next();
 };
 
+/*
 export const JWT = [
     checkHeader, 
     checkToken, 
     verifyAndAuthenticate
 ];
+*/
 
 /**
  * creazione dei JWT per i test
  */
-let tok = jwt.sign({"latitudine":36.15,"longitudine":12.46,"tipologia":"buca","severita":"media","email":"mariorossi@virgilio.it"},process.env.KEY);
+//let tok = jwt.sign({"latitudine":35.15,"longitudine":8.90,"tipologia":"tsunami","severita":"media","email":"ronchini.nicola@outlook.it"},process.env.KEY);
 //let tok = jwt.sign({"email":"ronchini.nicola@outlook.it","dataInizio":"2023-03-15 14:30:00","dataFine":"2021-03-15 14:30:00"},process.env.KEY);
 //let tok = jwt.sign({"stato":"VALIDATED","id":[10,11,14],"email":"adrianomancini@gmail.com"},process.env.KEY);
 //let tok = jwt.sign({"ordinamento":"ASC"},process.env.KEY);
@@ -75,6 +77,8 @@ let tok = jwt.sign({"latitudine":36.15,"longitudine":12.46,"tipologia":"buca","s
 //let tok = jwt.sign({"raggio":1000,"formato":"pdf"},process.env.KEY);
 //let tok = jwt.sign({"formato":"pdf","email":"ronchini.nicola@outlook.it"},process.env.KEY);
 //let tok = jwt.sign({"idVal":[8,10,14],"idRej":[9,11],"email":"adrianomancini@gmail.com"},process.env.KEY)
-//let tok = jwt.sign({"id":"ciao"},process.env.KEY)
+//let tok = jwt.sign({"id":16,"email":"adrianomancini@gmail.com"},process.env.KEY)
+//let tok = jwt.sign({"id":1,"email":"ronchini.nicola@outlook.it","tipologia":"avvallamento","timestamp":"2023-02-15 18:30:00"},process.env.KEY)
+let tok = jwt.sign({"utente":"mariorossi@virgilio.it","email":"adrianomancini@gmail.com"},process.env.KEY)
 console.log(tok);
 
