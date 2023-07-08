@@ -149,10 +149,13 @@ export async function checkIdValAdmin(req:any,res:any,next:any) {
 };
 
 /**
+ * Funzione: checkData
  * 
- * @param req 
- * @param res 
- * @param next 
+ * Funzione che verifica la presenza del campo "timestamp" della segnalazione e il relativo formato 
+ * 
+ * @param req token JWT preso in ingresso
+ * @param res restituzione dell'eventuale errore se non il formato della data è errato
+ * @param next se non viene trovato nessun errore passa alla prossima funzione 
  */
 export function checkData(req:any,res:any,next:any) {
     if (req.token.time) {
@@ -163,10 +166,14 @@ export function checkData(req:any,res:any,next:any) {
 };
 
 /**
+ * Funzione: checkOrdineDate
  * 
- * @param req 
- * @param res 
- * @param next 
+ * Funzione che verifica la presenza contemporanea della data d'inizio e di fine, 
+ * il relativo formato e assicurandosi che la data d'inizio sia antecedente a quella di fine
+ * 
+ * @param req token JWT preso in ingresso
+ * @param res restituzione dell'eventuale errore se una delle ipotesi sopra descritte non sono verificate
+ * @param next se non viene trovato nessun errore passa alla prossima funzione 
  */
 export function checkOrdineDate(req:any,res:any,next:any) {
     const regex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
@@ -182,10 +189,13 @@ export function checkOrdineDate(req:any,res:any,next:any) {
 };
 
 /**
+ * Funzione: CheckFormato
  * 
- * @param req 
- * @param res 
- * @param next 
+ * Funzione che verifica che il formato di file da restuire passato dall'utente sia corretto
+ * 
+ * @param req token JWT preso in ingresso
+ * @param res restituzione dell'eventuale errore se il formato non corrisponde
+ * @param next se non viene trovato nessun errore passa alla prossima funzione
  */
 export function checkFormato(req:any,res:any,next:any){
     if (req.token.formato) {
