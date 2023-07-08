@@ -11,7 +11,7 @@ app.use(express.json());
 /**
  * Richiesta di creazione di una segnalazione
  */
-app.post('/crea-segnalazione',Middleware.JWT,Controlli.Verifica,(req,res) => {
+app.post('/crea-segnalazione',Middleware.JWT,Controlli.Verifica,Controlli.checkData,(req,res) => {
     controller.creaSegnalazioni(req);
     res.send("success");
 });
@@ -19,7 +19,7 @@ app.post('/crea-segnalazione',Middleware.JWT,Controlli.Verifica,(req,res) => {
 /**
  * Richiesta di aggiornamento di una segnalazione
  */
-app.post('/modifica-segnalazione',Middleware.JWT,(req,res) =>{
+app.post('/modifica-segnalazione',Middleware.JWT,Controlli.verificaEsistenzaSegn,(req,res) =>{
     controller.modSegnalazioni(req);
     res.send("success");
 });
@@ -27,7 +27,7 @@ app.post('/modifica-segnalazione',Middleware.JWT,(req,res) =>{
 /**
  * Richiesta di cancellazione di una segnalazione
  */
-app.post('/cancella-segnalazione',Middleware.JWT,(req,res)=>{
+app.post('/cancella-segnalazione',Middleware.JWT,Controlli.verificaEsistenzaSegn,(req,res)=>{
     controller.cancSegnalazioni(req);
     res.send("success");
 });
@@ -36,7 +36,7 @@ app.post('/cancella-segnalazione',Middleware.JWT,(req,res)=>{
  * Richiesta per verificare lo stato delle richieste filtrando per stato ed eventulamente
  * intervallo temporale
  */
-app.post('/filtra',Middleware.JWT,(req,res)=>{
+app.post('/filtra',Middleware.JWT,Controlli.checkStato,Controlli.checkOrdineDate,(req,res)=>{
     controller.filtro(req,res);
 });
 
@@ -58,7 +58,7 @@ app.post('/graduatoria',Middleware.JWT,(req,res)=>{
 /**
  * Richiesta per la creazione di un file con le statistiche delle segnalazioni
  */
-app.post('/statistiche',Middleware.JWT,Controlli.checkMail,Controlli.verificaEsistenza,(req,res)=>{
+app.post('/statistiche',Middleware.JWT,Controlli.checkMail,Controlli.verificaEsistenza,Controlli.checkFormato,(req,res)=>{
     controller.statistiche(req);
     res.send("Success");
 });

@@ -92,31 +92,46 @@ export function checkOrdinamento(req:any,res:any,next:any) {
  */
 export function checkStato(req:any,res:any,next:any) {
     if (req.token.stato) {
-        if (req.token.stato === "VALIDATED" || req.token.stato === "REJECTED") next()
+        if (req.token.stato === "VALIDATED" || req.token.stato === "REJECTED" || req.token.stato === "PENDING") next()
+            else res.send("Stato errato")
     }
-    else res.send("Stato errato o mancante")
+    else next()
 }
 
 /**
+ * Funzione: verificaEsistenzaSegn
  * 
- * @param req 
- * @param res 
- * @param next 
+ * Funzione che si occupa di vericare sia il campo "id" del token
+ * che l'esistenza della segnalazione associata all'id.
+ * 
+ * @param req token JWT preso in ingresso
+ * @param res restituzione dell'eventuale errore se non è presente l'id nel JWT o la segnalazione non è esistente
+ * @param next se non viene trovato nessun errore passa alla prossima funzione
  */
 export async function verificaEsistenzaSegn(req:any,res:any,next:any) {
     if (req.token.id) {
         let esistenza: any = await segnalazioni.findOne({where: {id:req.token.id}})
         if (esistenza != null) next();
+        else (res.send("Segnalazione non esistente"))
     }
-    else res.send("Segnalazione non esistente o ID non specificato");
+    else res.send("ID non specificato");
 }
 
+/**
+ * Funzione: checkIdValAdmin
+ * 
+ * Funzione che si occupa di vericare sia il campo "idVal" che il campo "idRej" del token
+ * e verifica l'esistenza delle segnalazioni.
+ * 
+ * @param req token JWT preso in ingresso
+ * @param res restituzione dell'eventuale errore se non è presente l'idVal e l'idRej nel JWT o la segnalazione non è esistente
+ * @param next se non viene trovato nessun errore passa alla prossima funzione
+ */
 export async function checkIdValAdmin(req:any,res:any,next:any) {
     let flag: Boolean = false;
     if (req.token.idVal || req.token.idRej) {
         if (req.token.idVal) {
             for (let id of req.token.idVal) {
-                console.log(id)
                 let esistenza: any = await segnalazioni.findOne({where: {id:id}})
                 if (esistenza === null) flag = true;
             }
@@ -132,6 +147,57 @@ export async function checkIdValAdmin(req:any,res:any,next:any) {
     }
     else res.send("Segnalazioni non inserite");
 };
+
+/**
+ * 
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+export function checkData(req:any,res:any,next:any) {
+    if (req.token.time) {
+        const regex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
+        if (regex.test(req.token.time)) next();
+            else res.send("Formato della data non riconosciuto")
+    } else next()
+};
+
+/**
+ * 
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+export function checkOrdineDate(req:any,res:any,next:any) {
+    const regex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
+    if (req.token.dataInizio && req.token.dataFine) {
+        if (regex.test(req.token.dataInizio) && regex.test(req.token.dataFine)) {
+            const dataInizio = new Date(req.token.dataInizio);
+            const dataFine = new Date(req.token.dataFine);
+            if (dataInizio<dataFine) next()
+            else res.send("La data di inizio deve essere precedente alla data di fine")
+        } else res.send("Formato sbagliato")
+    }
+    else res.send("Date mancanti")
+};
+
+/**
+ * 
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+export function checkFormato(req:any,res:any,next:any){
+    if (req.token.formato) {
+        if (req.token.formato === "JSON" || req.token.formato === "pdf" || req.token.formato === "csv") next()
+            else res.send("Formato errato")
+    }
+    else res.send("Formato non specificato")
+}
+
+//check tipologia severita lat long raggio
+//check mail o admin
+// sia che sia vuoto o no
 
 export const Verifica = [
     verificaEsistenza,

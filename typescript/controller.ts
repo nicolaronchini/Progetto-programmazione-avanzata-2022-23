@@ -56,7 +56,7 @@ export function modSegnalazioni(req:any): void{
  * @param req body del token JWT utilizzato per l'autenticazione
  * @param res return delle segnalazioni filtrate
  */
-export async function filtro(req:any,res:any) { //middleware data inzio e data di fine
+export async function filtro(req:any,res:any) {
     let segnFiltrate:any;
     if (req.token.stato && (!req.token.dataInizio)) {
         segnFiltrate = await segnalazioni.findAll({where: {stato: req.token.stato, email: req.token.email}});
@@ -84,7 +84,7 @@ export async function filtro(req:any,res:any) { //middleware data inzio e data d
  * 
  * @param req body del token JWT utilizzato per l'autenticazione
 */
-export async function agg_stato(req:any) {  //da mettere i middleware per admin e stato e id
+export async function agg_stato(req:any) { 
     segnalazioni.update({stato:"VALIDATED"}, {where: {id: req.token.idVal, stato:"PENDING"}});
     segnalazioni.update({stato:"REJECTED"}, {where: {id: req.token.idRej, stato:"PENDING"}});
     let segn : any = await segnalazioni.findAll({where: {id: req.token.idVal}});
