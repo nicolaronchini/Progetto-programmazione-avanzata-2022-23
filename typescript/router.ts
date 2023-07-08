@@ -43,7 +43,7 @@ app.post('/filtra',Middleware.JWT,(req,res)=>{
 /**
  * Funzione dedicata all'admin per la validazione delle segnalazioni in PENDING
  */
-app.post('/agg-stato',Middleware.JWT,Controlli.verificaAdmin,(req,res)=>{
+app.post('/agg-stato',Middleware.JWT,Controlli.verificaAdmin,Controlli.checkIdValAdmin,(req,res)=>{
     controller.agg_stato(req);
     res.send("success");
 });

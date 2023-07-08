@@ -85,16 +85,15 @@ export async function filtro(req:any,res:any) { //middleware data inzio e data d
  * @param req body del token JWT utilizzato per l'autenticazione
 */
 export async function agg_stato(req:any) {  //da mettere i middleware per admin e stato e id
-    segnalazioni.update({stato:req.token.stato}, {where: {id: req.token.id, stato:"PENDING"}});
-    if(req.token.stato == "VALIDATED"){
-        let segn : any = await segnalazioni.findAll({where: {id: req.token.id}});
-        for (let val of segn) {
-            let utente : any = await utenti.findAll({where: {email: val.email}});
-            if(utente[0].dataValues.richiesteVal > 10) {
-                utenti.increment({ coins : 0.15, richiesteVal: 1}, {where : {email: utente[0].dataValues.email}})
-            }
-            else {utenti.increment({ coins : 0.1, richiesteVal: 1}, {where : {email: utente[0].dataValues.email}})}
+    segnalazioni.update({stato:"VALIDATED"}, {where: {id: req.token.idVal, stato:"PENDING"}});
+    segnalazioni.update({stato:"REJECTED"}, {where: {id: req.token.idRej, stato:"PENDING"}});
+    let segn : any = await segnalazioni.findAll({where: {id: req.token.idVal}});
+    for (let val of segn) {
+        let utente : any = await utenti.findAll({where: {email: val.email}});
+        if(utente[0].dataValues.richiesteVal > 10) {
+            utenti.increment({ coins : 0.15, richiesteVal: 1}, {where : {email: utente[0].dataValues.email}})
         }
+        else {utenti.increment({ coins : 0.1, richiesteVal: 1}, {where : {email: utente[0].dataValues.email}})}
     }
 };
 

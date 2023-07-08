@@ -97,6 +97,42 @@ export function checkStato(req:any,res:any,next:any) {
     else res.send("Stato errato o mancante")
 }
 
+/**
+ * 
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+export async function verificaEsistenzaSegn(req:any,res:any,next:any) {
+    if (req.token.id) {
+        let esistenza: any = await segnalazioni.findOne({where: {id:req.token.id}})
+        if (esistenza != null) next();
+    }
+    else res.send("Segnalazione non esistente o ID non specificato");
+}
+
+export async function checkIdValAdmin(req:any,res:any,next:any) {
+    let flag: Boolean = false;
+    if (req.token.idVal || req.token.idRej) {
+        if (req.token.idVal) {
+            for (let id of req.token.idVal) {
+                console.log(id)
+                let esistenza: any = await segnalazioni.findOne({where: {id:id}})
+                if (esistenza === null) flag = true;
+            }
+        }
+        if (req.token.idRej) {
+            for (let id of req.token.idRej) {
+                let esistenza: any = await segnalazioni.findOne({where: {id:id}})
+                if (esistenza === null) flag = true;
+            }
+        }
+        if (!flag) next();
+        else res.send("Segnalazioni non esistenti");
+    }
+    else res.send("Segnalazioni non inserite");
+};
+
 export const Verifica = [
     verificaEsistenza,
     verificaNumToken
