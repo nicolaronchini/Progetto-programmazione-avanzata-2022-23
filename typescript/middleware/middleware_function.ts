@@ -1,5 +1,6 @@
 import { segnalazioni, utenti } from '../Modello/model';
 import { Sequelize } from 'sequelize';
+import { getError, ErrorEnum } from '../factory/factory';
 
 /**
  * Funzione: verificaEsistenza
@@ -15,8 +16,8 @@ export async function verificaEsistenza(req:any,res:any,next: any) {
     if (req.token.email) {
         let esistenza: any = await utenti.findOne({where: {email:req.token.email}})
         if (esistenza != null) next();
-        else res.send("Utente non esistente");
-    } else res.send("Mail non specificata")
+        else next(ErrorEnum.NoUser);
+    } else next(ErrorEnum.NoMail)
 }
 
 /**
@@ -32,7 +33,7 @@ export async function verificaEsistenza(req:any,res:any,next: any) {
 export async function verificaNumToken(req:any,res:any,next: any) {
     let utente: any = await utenti.findAll({where: {email:req.token.email}})
     if (utente[0].dataValues.token >= 1) next();
-    else res.send("Non hai abbastanza token");
+    else res.sendStatus(401);
 }
 
 /**
@@ -375,5 +376,29 @@ export async function checkEmailCanc(req:any,res:any,next:any) {
     let utente: any = await utenti.findAll({where: {email:req.token.email}})
     if (req.token.email === istanza.email || utente[0].dataValues.ruolo === "admin") next()
         else res.send("Non hai i permessi per cancellare questa segnalazione");
+};
+
+/**
+ * 
+ * @param err 
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+export function logErrors(err: any, req: any, res: any, next: any): void {
+    const new_err = getError(err).getErrorObj();
+    console.log(new_err);
+    next(new_err);
+}
+
+/**
+ * 
+ * @param err 
+ * @param req 
+ * @param res 
+ * @param next 
+ */
+export function resErrori(err:any,req:any,res:any,next:any) {
+    res.status(err.status).json(err.msg)
 };
 

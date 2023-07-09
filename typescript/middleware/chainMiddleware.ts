@@ -77,3 +77,8 @@ export const VerificaRefill = [
     fun.verificaEsistenza,
     fun.verificaAdmin
 ];
+
+export const VerificaErr = [
+    fun.logErrors,
+    fun.resErrori
+];

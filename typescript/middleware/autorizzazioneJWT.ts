@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 require('dotenv').config();
+import * as errori from '../factory/factory'
 
 /**
  * Funzione: checkHeader 
@@ -15,8 +16,7 @@ export function checkHeader(req, res, next){
     if (authHeader) {
         next();
     }else{
-        let err = new Error("ahi ahi no auth header");
-        next(err);
+        next(errori.ErrorEnum.noAuth)
     }
 };
 
@@ -52,23 +52,18 @@ export function checkToken(req,res,next){
  */
 export function verifyAndAuthenticate(req,res,next){
     let decoded = jwt.verify(req.token, process.env.KEY);
-    if(decoded !== null)
+    if(decoded !== null) {
       req.token = decoded;
       next();
+    }
+    else res.send("chiave sbagliata")
 };
-
-/*
-export const JWT = [
-    checkHeader, 
-    checkToken, 
-    verifyAndAuthenticate
-];
-*/
 
 /**
  * creazione dei JWT per i test
  */
-//let tok = jwt.sign({"latitudine":35.15,"longitudine":18.90,"tipologia":"buca","severita":"media","email":"ronchini.nicola@outlook.it"},process.env.KEY);
+//let tok = jwt.sign({"latitudine":35.15,"longitudine":18.90,"tipologia":"buca","severita":"media","email":"mariorossi@virgilio.it"},process.env.KEY);
+let tok = jwt.sign({"latitudine":35.15,"longitudine":18.90,"tipologia":"buca","severita":"media"},process.env.KEY);
 //let tok = jwt.sign({"email":"ronchini.nicola@outlook.it","dataInizio":"2021-03-15 14:30:00","dataFine":"2023-03-15 14:30:00"},process.env.KEY);
 //let tok = jwt.sign({"stato":"VALIDATED","id":[10,11,14],"email":"adrianomancini@gmail.com"},process.env.KEY);
 //let tok = jwt.sign({"ordinamento":"ASC","email":"ronchini.nicola@outlook.it"},process.env.KEY);
@@ -80,5 +75,5 @@ export const JWT = [
 //let tok = jwt.sign({"id":17,"email":"ronchini.nicola@outlook.it"},process.env.KEY)
 //let tok = jwt.sign({"id":1,"email":"ronchini.nicola@outlook.it","tipologia":"avvallamento","timestamp":"2023-02-15 18:30:00"},process.env.KEY)
 //let tok = jwt.sign({"utente":"mariorossi@virgilio.it","email":"adrianomancini@gmail.com"},process.env.KEY)
-//console.log(tok);
+console.log(tok);
 

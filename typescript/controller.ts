@@ -7,9 +7,23 @@ import * as PDF from './funzioniAusiliarie/creaPDF'
 import {formulaDistanza} from './funzioniAusiliarie/formulaHaversine';
 import { decrementa } from './funzioniAusiliarie/decrementaToken';
 import { Op,Sequelize } from 'sequelize';
+import * as messaggi from './factory/messaggi'
+import { ErrorEnum, getError } from './factory/factory';
 
 var fs = require('fs');
 var dobbyscan = require('dobbyscan');
+
+/**
+ * 
+ * @param enum_error 
+ * @param err 
+ * @param res 
+ */
+function controllerErrors(enum_error: ErrorEnum, err: Error, res: any) {
+    const new_err = getError(enum_error).getErrorObj();
+    console.log(err);
+    res.status(new_err.status).json(new_err.msg);
+}
 
 /**
  * Funzione: creaSegnalazioni
@@ -20,9 +34,13 @@ var dobbyscan = require('dobbyscan');
  * 
  * @param req body del token JWT utilizzato per l'autenticazione
  */
-export function creaSegnalazioni(req:any): void{
-    creazione(req);
-    decrementa(req.token.email);
+export function creaSegnalazioni(req:any,res:any): void{
+    try {
+        creazione(req);
+        decrementa(req.token.email);
+    } catch (errore:any) {
+        controllerErrors(ErrorEnum.InternalServer,errore,res)
+    }
 }
 
 /**

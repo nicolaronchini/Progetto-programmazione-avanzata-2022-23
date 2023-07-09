@@ -10,8 +10,8 @@ app.use(express.json());
 /**
  * Richiesta di creazione di una segnalazione
  */
-app.post('/crea-segnalazione',Middleware.JWT,Middleware.VerificaCreazione,(req,res) => {
-    controller.creaSegnalazioni(req);
+app.post('/crea-segnalazione',Middleware.JWT,Middleware.VerificaCreazione,Middleware.VerificaErr,(req,res) => {
+    controller.creaSegnalazioni(req,res);
     res.send("success");
 });
 
