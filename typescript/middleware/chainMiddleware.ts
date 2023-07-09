@@ -19,6 +19,7 @@ export const VerificaCreazione = [
 
 export const VerificaModifica = [
     fun.verificaEsistenza,
+    fun.verificaNumToken,
     fun.verificaEsistenzaSegn,
     fun.campiNonAcc,
     fun.ModTipologia,
@@ -30,6 +31,7 @@ export const VerificaModifica = [
 
 export const VerificaCancellazione = [
     fun.verificaEsistenza,
+    fun.verificaNumToken,
     fun.verificaEsistenzaSegn,
     fun.checkEmailCanc
 ];

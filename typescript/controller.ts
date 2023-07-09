@@ -34,6 +34,7 @@ export function creaSegnalazioni(req:any): void{
  */
 export function cancSegnalazioni(req:any): void{
     segnalazioni.destroy({where: { id: req.token.id}});
+    decrementa(req.token.email);
 }
 
 /**
@@ -45,6 +46,7 @@ export function cancSegnalazioni(req:any): void{
  */
 export function modSegnalazioni(req:any): void{
     segnalazioni.update(req.token, {where : {id: req.token.id}});
+    decrementa(req.token.email);
 }
 
 /**

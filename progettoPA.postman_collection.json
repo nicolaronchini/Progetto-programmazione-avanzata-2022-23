@@ -1,0 +1,316 @@
+{
+	"info": {
+		"_postman_id": "99439eb7-857d-4bcf-a9db-95c686c41174",
+		"name": "progettoPA",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "28283827"
+	},
+	"item": [
+		{
+			"name": "http://localhost:8080/crea-segnalazione",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsYXRpdHVkaW5lIjozNS4xNSwibG9uZ2l0dWRpbmUiOjE4LjksInRpcG9sb2dpYSI6ImJ1Y2EiLCJzZXZlcml0YSI6Im1lZGlhIiwiZW1haWwiOiJyb25jaGluaS5uaWNvbGFAb3V0bG9vay5pdCIsImlhdCI6MTY4ODg4ODQyNn0.BmgUSH0C6qD0WyMGvUx4zrmhOFz2SHHtUkXlm7FgOUc",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/crea-segnalazione",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"crea-segnalazione"
+					],
+					"query": [
+						{
+							"key": "email",
+							"value": "prova",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/modifica-segnalazione",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZW1haWwiOiJyb25jaGluaS5uaWNvbGFAb3V0bG9vay5pdCIsInRpcG9sb2dpYSI6ImF2dmFsbGFtZW50byIsInRpbWVzdGFtcCI6IjIwMjMtMDItMTUgMTg6MzA6MDAiLCJpYXQiOjE2ODg4ODg1MDV9.vnj7zpMn8UM-QctK7dKeyQ4B8jHpjHP1IUSW6B84I9U",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/modifica-segnalazione",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"modifica-segnalazione"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/cancella-segnalazione",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTcsImVtYWlsIjoicm9uY2hpbmkubmljb2xhQG91dGxvb2suaXQiLCJpYXQiOjE2ODg4ODg1ODZ9.sPc-6QdvRDATHYmw5McB-0A-4W9xCqLRbz2PY2E-kP0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/cancella-segnalazione",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cancella-segnalazione"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/filtra",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvbmNoaW5pLm5pY29sYUBvdXRsb29rLml0IiwiZGF0YUluaXppbyI6IjIwMjEtMDMtMTUgMTQ6MzA6MDAiLCJkYXRhRmluZSI6IjIwMjMtMDMtMTUgMTQ6MzA6MDAiLCJpYXQiOjE2ODg4ODg2NTB9.2RswjurE4Sn1sXKDplVSAVs1acOc_KJMYGXNU_9oo2s",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/filtra",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"filtra"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/agg-stato",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFZhbCI6WzgsMTAsMTRdLCJpZFJlaiI6WzksMTFdLCJlbWFpbCI6ImFkcmlhbm9tYW5jaW5pQGdtYWlsLmNvbSIsImlhdCI6MTY4ODgwNTgwNX0.PDXoFzKja2fnoyP8NkBeGJEpX27brwGm5sZZREOrdRg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/agg-stato",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"agg-stato"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/graduatoria",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmRpbmFtZW50byI6IkFTQyIsImVtYWlsIjoicm9uY2hpbmkubmljb2xhQG91dGxvb2suaXQiLCJpYXQiOjE2ODg4ODg3NDV9.VnhlOHWqRJmusSuS49sUVcp_v5QfZItRlay5YhcR2OE",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/graduatoria",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"graduatoria"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/statistiche",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmb3JtYXRvIjoicGRmIiwiZW1haWwiOiJyb25jaGluaS5uaWNvbGFAb3V0bG9vay5pdCIsImlhdCI6MTY4ODgwODMzNX0.7I_Yj_nw4ZYoK0MDeiKNnRjed01RRGdX2M7MCdCevkM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/statistiche",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"statistiche"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/distanza",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvbmNoaW5pLm5pY29sYUBvdXRsb29rLml0IiwibGF0aXR1ZGluZSI6NDAsImxvbmdpdHVkaW5lIjoxMiwicmFnZ2lvIjoxMDAwMDAwLCJkYXRhSW5pemlvIjoiMjAyMS0wMy0xNSAxNDozMDowMCIsImRhdGFGaW5lIjoiMjAyMy0wMy0xNSAxNDozMDowMCIsImZvcm1hdG8iOiJwZGYiLCJpYXQiOjE2ODg4ODg5MzR9.AwKpulUmhc0I-m3KKoa2tVUmGFKMLfwBOvlseRpYxko",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/distanza",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"distanza"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/cluster",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InJvbmNoaW5pLm5pY29sYUBvdXRsb29rLml0IiwicmFnZ2lvIjoxMDAwLCJmb3JtYXRvIjoicGRmIiwiaWF0IjoxNjg4ODg4OTk5fQ.Aojm_UTbZgfSeMHEDZp7j6ZUbYGg-thm_4SwyFmayMA",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/cluster",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"cluster"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "http://localhost:8080/refill",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dGVudGUiOiJtYXJpb3Jvc3NpQHZpcmdpbGlvLml0IiwiZW1haWwiOiJhZHJpYW5vbWFuY2luaUBnbWFpbC5jb20iLCJpYXQiOjE2ODg4MjUxODR9.TSU41M7oh85oCBi9R362o7ZY8I6U0uNNQn6wfTpTYso",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/refill",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"refill"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
