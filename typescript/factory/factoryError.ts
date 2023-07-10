@@ -267,10 +267,6 @@ export enum ErrorEnum {
     InternalServer
 }
 
-
-/**
- * 
- */
 export function getError(type: ErrorEnum): ErrorObj{
     let retval: ErrorObj = null;
     switch (type){
