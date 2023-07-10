@@ -1,6 +1,6 @@
 import { segnalazioni, utenti } from '../Modello/model';
 import { Sequelize } from 'sequelize';
-import { getError, ErrorEnum } from '../factory/factory';
+import { getError, ErrorEnum } from '../factory/factoryError';
 
 /**
  * Funzione: verificaEsistenza
@@ -33,7 +33,7 @@ export async function verificaEsistenza(req:any,res:any,next: any) {
 export async function verificaNumToken(req:any,res:any,next: any) {
     let utente: any = await utenti.findAll({where: {email:req.token.email}})
     if (utente[0].dataValues.token >= 1) next();
-    else res.sendStatus(401);
+    else next(ErrorEnum.noToken);
 }
 
 /**
@@ -48,7 +48,7 @@ export async function verificaNumToken(req:any,res:any,next: any) {
 export async function verificaAdmin(req:any,res:any,next: any) {
     let utente: any = await utenti.findAll({where: {email:req.token.email}})
     if (utente[0].dataValues.ruolo === "admin") next();
-    else res.send("Non hai i permessi");
+    else next(ErrorEnum.NoPermessi);
 };
 
 /**
@@ -64,8 +64,9 @@ export async function verificaAdmin(req:any,res:any,next: any) {
 export function checkOrdinamento(req:any,res:any,next:any) {
     if (req.token.ordinamento) {
         if (req.token.ordinamento === "ASC" || req.token.ordinamento === "DESC") next()
+            else next(ErrorEnum.ErrOrd)
     }
-    else res.send("Ordinamento sbagliato o mancante")
+    else next(ErrorEnum.ErrOrd)
 };
 
 /**
@@ -81,7 +82,7 @@ export function checkOrdinamento(req:any,res:any,next:any) {
 export function checkStato(req:any,res:any,next:any) {
     if (req.token.stato) {
         if (req.token.stato === "VALIDATED" || req.token.stato === "REJECTED" || req.token.stato === "PENDING") next()
-            else res.send("Stato errato")
+            else next(ErrorEnum.ErrStato)
     }
     else next()
 }
@@ -100,9 +101,9 @@ export async function verificaEsistenzaSegn(req:any,res:any,next:any) {
     if (req.token.id) {
         let esistenza: any = await segnalazioni.findOne({where: {id:req.token.id}})
         if (esistenza != null) next();
-        else (res.send("Segnalazione non esistente"))
+        else next(ErrorEnum.EsSegn)
     }
-    else res.send("ID non specificato");
+    else next(ErrorEnum.NoId)
 }
 
 /**
@@ -131,9 +132,9 @@ export async function checkIdValAdmin(req:any,res:any,next:any) {
             }
         }
         if (!flag) next();
-        else res.send("Segnalazioni non esistenti");
+        else next(ErrorEnum.EsSegn);
     }
-    else res.send("Segnalazioni non inserite");
+    else next(ErrorEnum.NoId);
 };
 
 /**
@@ -149,7 +150,7 @@ export function checkData(req:any,res:any,next:any) {
     if (req.token.timestamp) {
         const regex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
         if (regex.test(req.token.timestamp)) next();
-            else res.send("Formato della data non riconosciuto")
+            else next(ErrorEnum.FormDate)
     } else next()
 };
 
@@ -165,15 +166,15 @@ export function checkData(req:any,res:any,next:any) {
  */
 export function checkOrdineDate(req:any,res:any,next:any) {
     const regex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
-    if (req.token.dataInizio && req.token.dataFine) {
+    if (req.token.dataInizio || req.token.dataFine) {
         if (regex.test(req.token.dataInizio) && regex.test(req.token.dataFine)) {
             const dataInizio = new Date(req.token.dataInizio);
             const dataFine = new Date(req.token.dataFine);
             if (dataInizio<dataFine) next()
-            else res.send("La data di inizio deve essere precedente alla data di fine")
-        } else res.send("Formato sbagliato")
+            else next(ErrorEnum.ErrOrd)
+        } else next(ErrorEnum.FormDate)
     }
-    else res.send("Date mancanti")
+    else next()
 };
 
 /**
@@ -188,9 +189,9 @@ export function checkOrdineDate(req:any,res:any,next:any) {
 export function checkFormato(req:any,res:any,next:any){
     if (req.token.formato) {
         if (req.token.formato === "JSON" || req.token.formato === "pdf" || req.token.formato === "csv") next()
-            else res.send("Formato errato")
+            else next(ErrorEnum.errFile)
     }
-    else res.send("Formato non specificato")
+    else next(ErrorEnum.esFile)
 }
 
 /**
@@ -205,9 +206,9 @@ export function checkFormato(req:any,res:any,next:any){
 export function checkTipologia(req:any,res:any,next:any){
     if (req.token.tipologia) {
         if (req.token.tipologia === "buca" || req.token.tipologia === "avvallamento") next()
-            else res.send("Tipologia non esistente")
+            else next(ErrorEnum.errTip)
     }
-    else res.send("Tipologia non specificata")
+    else next(ErrorEnum.esTip)
 }
 
 /**
@@ -222,9 +223,9 @@ export function checkTipologia(req:any,res:any,next:any){
 export function checkSeverita(req:any,res:any,next:any){
     if (req.token.severita) {
         if (req.token.severita === "bassa" || req.token.severita === "media" || req.token.severita === "alta") next()
-            else res.send("Severità non esistente")
+            else next(ErrorEnum.errSev)
     }
-    else res.send("Severità non specificata")
+    else next(ErrorEnum.esSev)
 }
 
 /**
@@ -239,9 +240,9 @@ export function checkSeverita(req:any,res:any,next:any){
 export function checkLatitudine(req:any,res:any,next:any){
     if (req.token.latitudine) {
         if (req.token.latitudine <= 90 || req.token.latitudine >= -90) next()
-            else res.send("Latitudine non valida")
+            else next(ErrorEnum.errLat)
     }
-    else res.send("Latitudine non specificata")
+    else next(ErrorEnum.esLat)
 }
 
 /**
@@ -256,9 +257,9 @@ export function checkLatitudine(req:any,res:any,next:any){
 export function checkLongitudine(req:any,res:any,next:any){
     if (req.token.longitudine) {
         if (req.token.longitudine <= 180 || req.token.longitudine >= -180) next()
-            else res.send("Longitudine non valida")
+            else next(ErrorEnum.errLong)
     }
-    else res.send("Longitudine non specificata")
+    else next(ErrorEnum.esLong)
 };
 
 /**
@@ -273,7 +274,7 @@ export function checkLongitudine(req:any,res:any,next:any){
  */
 export async function campiNonAcc(req:any,res:any,next:any) {
     let istanza : any = await segnalazioni.findOne({where: {id:req.token.id}})
-    if (req.token.email != istanza.email || req.token.stato) res.send("Non hai i permessi per modificare questi campi")
+    if (req.token.email != istanza.email || req.token.stato) next(ErrorEnum.NoPermessi)
         else next();
 };
 
@@ -289,7 +290,7 @@ export async function campiNonAcc(req:any,res:any,next:any) {
 export function ModTipologia(req:any,res:any,next:any){
     if (req.token.tipologia) {
         if (req.token.tipologia === "buca" || req.token.tipologia === "avvallamento") next()
-            else res.send("Tipologia non esistente")
+            else next(ErrorEnum.errTip)
     }
     else next()
 }
@@ -306,7 +307,7 @@ export function ModTipologia(req:any,res:any,next:any){
 export function ModSeverita(req:any,res:any,next:any){
     if (req.token.severita) {
         if (req.token.severita === "bassa" || req.token.severita === "media" || req.token.severita === "alta") next()
-            else res.send("Severità non esistente")
+            else next(ErrorEnum.errSev)
     }
     else next()
 }
@@ -323,7 +324,7 @@ export function ModSeverita(req:any,res:any,next:any){
 export function ModLatitudine(req:any,res:any,next:any){
     if (req.token.latitudine) {
         if (req.token.latitudine <= 90 || req.token.latitudine >= -90) next()
-            else res.send("Latitudine non valida")
+            else next(ErrorEnum.errLat)
     }
     else next()
 }
@@ -340,7 +341,7 @@ export function ModLatitudine(req:any,res:any,next:any){
 export function ModLongitudine(req:any,res:any,next:any){
     if (req.token.longitudine) {
         if (req.token.longitudine <= 180 || req.token.longitudine >= -180) next()
-            else res.send("Longitudine non valida")
+            else next(ErrorEnum.errLong)
     }
     else next()
 }
@@ -357,9 +358,9 @@ export function ModLongitudine(req:any,res:any,next:any){
 export function checkRaggio(req:any,res:any,next:any){
     if (req.token.raggio) {
         if (req.token.raggio > 0) next()
-            else res.send("Raggio non valido")
+            else next(ErrorEnum.errRaggio)
     }
-    else res.send("Raggio non presente")
+    else next(ErrorEnum.esRaggio)
 }
 
 /**
@@ -375,15 +376,19 @@ export async function checkEmailCanc(req:any,res:any,next:any) {
     let istanza : any = await segnalazioni.findOne({where: {id:req.token.id}})
     let utente: any = await utenti.findAll({where: {email:req.token.email}})
     if (req.token.email === istanza.email || utente[0].dataValues.ruolo === "admin") next()
-        else res.send("Non hai i permessi per cancellare questa segnalazione");
+        else next(ErrorEnum.NoPermessi)
 };
 
 /**
+ * Funzione: logErrors
  * 
- * @param err 
- * @param req 
- * @param res 
- * @param next 
+ * Funzione utilizzata per stampare a schermo sia il messaggio che lo status
+ * dell'errore riscontrato.
+ * 
+ * @param err errore generato dalle funzioni precedenti
+ * @param req richiesta dall'utente
+ * @param res restituzione all'interno del server
+ * @param next riferimento alla successiva funzione
  */
 export function logErrors(err: any, req: any, res: any, next: any): void {
     const new_err = getError(err).getErrorObj();
@@ -392,11 +397,15 @@ export function logErrors(err: any, req: any, res: any, next: any): void {
 }
 
 /**
+ * Funzione: resError
  * 
- * @param err 
- * @param req 
- * @param res 
- * @param next 
+ * Funzione simile alla precedente con la differenza che manda l'errore
+ * direttamente al client e non alla console.
+ * 
+ * @param err errore generato dalle funzioni precedenti
+ * @param req richiesta dell'utente
+ * @param res restituzione all'interno del server
+ * @param next riferimento alla successiva funzione
  */
 export function resErrori(err:any,req:any,res:any,next:any) {
     res.status(err.status).json(err.msg)

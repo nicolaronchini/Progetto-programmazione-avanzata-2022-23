@@ -23,7 +23,8 @@ export const formatoSev: string = "Bad Request - Severità errata";
 export const esistenzaSev: string = "Bad Request - Severità non specificata";
 export const formatoRaggio: string = "Bad Request - Raggio errato";
 export const esistenzaRaggio: string = "Bad Request - Raggio non specificato";
-export const internalServerError_message: string = "ERROR - Internal server error";
+export const internalServerError_message: string = "Error - Internal server error";
+export const problemiRefill: string = "Bad request - Utente non trovato o con token già assegnati";
 
 export const creazioneSegnalazione: string = "Success - Segnalazione creata correttamente";
 export const modificaSegnalazione: string = "Success - Segnalazione modificata correttamente";
