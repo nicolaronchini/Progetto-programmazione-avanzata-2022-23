@@ -15,7 +15,7 @@ Il sistema permette la:
 
 Per ognuna delle seguenti azioni, l'utente deve prima generare un token JWT contenente tutte le informazioni necessarie per le operazioni. Successivamente, verrà utilizzato come parametro di autenticazione per le chiamate POST delle varie API realizzate.
 
-Il sistema realizzato implementa le funzionalità di Docker per la creazione di un ambiente virtualizzato contente il database MySQL e il server su cui vengono effettuate le chiamate.
+Il sistema realizzato implementa le funzionalità di Docker per la creazione di un ambiente virtualizzato contenente il database MySQL e il server su cui vengono effettuate le chiamate.
 
 Per l'utilizzo, l'utente può sfruttare un servizio di testing come Postman per effettuare chiamate sulla porta 8080, passando il token JWT adeguato.
 
@@ -75,10 +75,10 @@ In questo modo è possibile cancellare una segnalazione esistente.
 ```
 
 * L'id deve corrispondere ad una segnalazione esistente
-* La segnalazione può essere modificata solamente dall'utente che l'ha creata, controllo sull'email inserita, o da un admin, controllo del ruolo corrispondente all'email
+* La segnalazione può essere cancellata solamente dall'utente che l'ha creata, controllo sull'email inserita, o da un admin, controllo del ruolo corrispondente all'email
 
 ### Filtra Segnalazioni (/filtra)
-In questo modo è possibile selezionare le segnalazioni fatte, filtrando eventualmente per lo stato e per un range di date.
+In questo modo è possibile selezionare le proprie segnalazioni, filtrando eventualmente per lo stato e per un range di date.
 
 ```
 {
@@ -89,6 +89,7 @@ In questo modo è possibile selezionare le segnalazioni fatte, filtrando eventua
   "iat": 1688888650
 }
 ```
+* Se si vuole utilizzare un range di date assicurarsi che siano presenti entrambe
 
 ### Aggiorna stato delle segnalazioni (/agg-stato)
 In questo modo è possibile aggiornare lo stato delle segnalazioni in "PENDING" a "VALIDATED" o "REJECTED". Questa operazione può essere effettuata solamente dall'amministratore e può essere eseguita in modalità bulk passando più segnalazioni in una sola richiesta.
@@ -122,7 +123,7 @@ In questo modo è possibile visualizzare la graduatoria degli utenti, classifica
   "iat": 1688888745
 }
 ```
-* L'ordinamento può assumere valori: "ASC", per ascendente, e "DESC, per discendete. I valori devono essere inseriti nel token così come scritti
+* L'ordinamento può assumere valori: "ASC", per ascendente, e "DESC, per discendente. I valori devono essere inseriti nel token così come scritti
 
 ### Calcolo statistiche (/statistiche)
 In questo modo è possibile generare un file contenente le statistiche sulle occorrenze delle segnalazioni presenti, distinte per tipologia, severità e stato.
@@ -154,9 +155,10 @@ In questo modo è possibile generare un file contenente le segnalazioni "VALIDAT
 ```
 * Il raggio fornito deve essere in metri
 * Il formato può assumere valori: "JSON", "csv", "pdf". I valori devono essere inseriti nel token così come scritti
+* Se si vuole utilizzare un range di date assicurarsi che siano presenti entrambe
 
 ### Clustering delle segnalazioni (/cluster)
-In questo modo è possibile generare un file contenente il numero di cluster presenti per le segnalazioni "VALIDATED", distinte per tipologia e severità. Per fare ciò si sfrutta DBSCAN come algoritmo di clustering e un raggio di ricerca fornito.
+In questo modo è possibile generare un file contenente il numero di cluster presenti per le segnalazioni "VALIDATED", distinte per tipologia e severità. Per fare ciò si sfrutta DBSCAN (libreria [dobbyscan](https://github.com/mapbox/dobbyscan)) come algoritmo di clustering e un raggio di ricerca fornito.
 
 ```
 {
@@ -171,7 +173,7 @@ In questo modo è possibile generare un file contenente il numero di cluster pre
 
 
 ### Ricarica dei token (/refill)
-In questo modo è possibile per un admin restituire il numero di token massimo (10) ad un utente che gli ha esauriti. I token vengono decrementati ad ogni operazione di creazione, modifica o cancellazione sul database.
+In questo modo è possibile per un admin restituire il numero di token massimo (10) ad un utente che li ha esauriti. I token vengono decrementati ad ogni operazione di creazione, modifica o cancellazione sul database.
 
 ```
 {
@@ -228,7 +230,7 @@ Design pattern creazionale utilizzato per garantire l'esistenza di un'unica ista
 
 #### Chain  of Responsability
 
-Design pattern comportamentale utilizzato per la costruzione di catene di middleware di validazione delle richieste. In questo modo, prima di essere eseguite le funzioni del controller, si vanno a controllare la corretta creazione del token jwt e la corretta scrittuta dei payload per le rotte e a gestire gli errori intermedi. 
+Design pattern comportamentale utilizzato per la costruzione di catene di middleware di validazione delle richieste. In questo modo, prima di essere eseguite le funzioni del controller, si vanno a controllare la corretta creazione del token jwt e la corretta scrittura dei payload per le rotte e a gestire gli errori intermedi. 
 
 
 #### Factory
@@ -238,7 +240,7 @@ Design patter crezionale utilizzato per la creazione di oggetti specifici per og
 ## Avvio 
 
 * Fare la git clone della repository in locale
-* Creare un nuovo file .env all'interno della cartella del progetto (dove è presente il docker-compose)
+* Creare un nuovo file .env all'interno della cartella del progetto (dove è presente il docker-compose.yaml)
 * Inserire all'interno del file la seguente riga con la chiave usata per generare i token 
 ```
 KEY=secretkey
@@ -253,7 +255,7 @@ docker-compose up
 
 ## Test
 
-Sono stati definiti una serie di test che possono essere eseguiti in Postman semplicemnte importando la [postman collection](https://github.com/nicolaronchini/Progetto-programmazione-avanzata-2022-23/blob/main/progettoPA.postman_collection.json) che si trova nlla repository.
+Sono stati definiti una serie di test che possono essere eseguiti in Postman semplicemnte importando la [postman collection](https://github.com/nicolaronchini/Progetto-programmazione-avanzata-2022-23/blob/main/progettoPA.postman_collection.json) che si trova nella repository.
 
 ## Note
 
