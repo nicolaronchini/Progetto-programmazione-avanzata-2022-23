@@ -123,7 +123,7 @@ TOKEN DA INSERIRE
 ## Progettazione
 ###Diagramma dei Casi d'Uso
 
-!(/progettazione/use_case.png)
+![GitHub](/progettazione/use_case.png)
 
 ### Pattern
 #### Singleton
