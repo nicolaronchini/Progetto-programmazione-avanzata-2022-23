@@ -121,9 +121,41 @@ TOKEN DA INSERIRE
 * La mail nel campo "utente" deve corrispondere ad un utente con token pari a 0
 
 ## Progettazione
-###Diagramma dei Casi d'Uso
+### Diagramma dei Casi d'Uso
 
 ![GitHub](/progettazione/use_case.png)
+
+### Diagrammi delle sequenze
+
+* /crea-segnalazione
+![GitHub](/progettazione/sequenzaCreazione.png)
+
+* /modifica-segnalazione
+![GitHub](/progettazione/sequenzaModifica.png)
+
+* /cancella-segnalazione
+![GitHub](/progettazione/sequenzaCancellazione.png)
+
+* /filtra
+![GitHub](/progettazione/sequenzaFiltro.png)
+
+* /agg-stato
+![GitHub](/progettazione/sequenzaAggStato.png)
+
+* /graduatoria
+![GitHub](/progettazione/sequenzaGraduatoria.png)
+
+* /statistiche
+![GitHub](/progettazione/sequenzaStatistiche.png)
+
+* /distanza
+![GitHub](/progettazione/sequenzaDistanza.png)
+
+* /cluster
+![GitHub](/progettazione/sequenzaClustering.png)
+
+* /refill
+![GitHub](/progettazione/sequenzaRefill.png)
 
 ### Pattern
 #### Singleton
@@ -141,6 +173,20 @@ Design pattern comportamentale utilizzato per la costruzione di catene di middle
 Design patter crezionale utilizzato per la creazione di oggetti specifici per ogni possibile risposta, di errore o di successo, restituita in seguito ad una richiesta. Ogni oggetto conterrà uno status code e un messaggio diverso in base alla chiamata. 
 
 ## Avvio 
+
+* Fare la git clone della repository in locale
+* Creare un nuovo file .env all'interno della cartella del progetto (dove è presente il docker-compose)
+* Inserire all'interno del file la seguente riga con la chiave usata per generare i token 
+```
+KEY=secretkey
+```
+* Inizializzare Docker 
+* Effetture il seguente comando all'interno della cartella del progetto
+```
+docker-compose up
+```
+* Testare il servizio attraverso le chiamate Postman fornite come test  
+
 
 ## Test
 
