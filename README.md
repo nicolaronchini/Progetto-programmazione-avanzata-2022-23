@@ -121,7 +121,9 @@ TOKEN DA INSERIRE
 * La mail nel campo "utente" deve corrispondere ad un utente con token pari a 0
 
 ## Progettazione
+###Diagramma dei Casi d'Uso
 
+!(/progettazione/use_case.png)
 
 ### Pattern
 #### Singleton
