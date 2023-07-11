@@ -15,7 +15,7 @@ Il sistema permette la:
 
 Per ognuna delle seguenti azioni, l'utente deve prima generare un token JWT contenente tutte le informazioni necessarie per le operazioni. Successivamente, verrà utilizzato come parametro di autenticazione per le chiamate POST delle varie API realizzate.
 
-Il sistema realizzato implementa le funzionalità di Docker per la creazione di un ambiente virtualizzato contenente il database MySQL e il server su cui vengono effettuate le chiamate.
+Il sistema realizzato implementa le funzionalità di Docker per la creazione di un ambiente contenente il database MySQL, il codice ed il server su cui vengono effettuate le chiamate.
 
 Per l'utilizzo, l'utente può sfruttare un servizio di testing come Postman per effettuare chiamate sulla porta 8080, passando il token JWT adeguato.
 
