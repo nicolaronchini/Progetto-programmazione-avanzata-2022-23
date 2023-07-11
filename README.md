@@ -24,7 +24,14 @@ Per l'utilizzo, l'utente può sfruttare un servizio di testing come Postman per 
 In questo modo è possibile creare una nuova segnalazione.
 
 ```
-TOKEN DA INSERIRE
+{
+  "latitudine": 35.15,
+  "longitudine": 18.9,
+  "tipologia": "buca",
+  "severita": "media",
+  "email": "ronchini.nicola@outlook.it",
+  "iat": 1688888426
+}
 ```
 
 * La nuova segnalazione generata viene messa in automatico a "PENDING"
@@ -42,17 +49,29 @@ TOKEN DA INSERIRE
 In questo modo è possibile modificare una segnalazione esistente.
 
 ```
-TOKEN DA INSERIRE
+{
+  "id": 1,
+  "email": "ronchini.nicola@outlook.it",
+  "tipologia": "avvallamento",
+  "timestamp": "2023-02-15 18:30:00",
+  "iat": 1688888505
+}
 ```
 
 * L'id deve corrispondere ad una segnalazione esistente
 * La segnalazione può essere modificata solamente dall'utente che l'ha creata, controllo sull'email inserita
+* I campi devono corrispondere a quelli definiti nel database
+* Il payload può essere personalizzato in base a ciò che si vuole modificare
 
 ### Cancella Segnalazione (/cancella-segnalazione)
 In questo modo è possibile cancellare una segnalazione esistente.
 
 ```
-TOKEN DA INSERIRE
+{
+  "id": 1,
+  "email": "ronchini.nicola@outlook.it",
+  "iat": 1688978828
+}
 ```
 
 * L'id deve corrispondere ad una segnalazione esistente
@@ -62,14 +81,32 @@ TOKEN DA INSERIRE
 In questo modo è possibile selezionare le segnalazioni fatte, filtrando eventualmente per lo stato e per un range di date.
 
 ```
-TOKEN DA INSERIRE
+{
+  "email": "ronchini.nicola@outlook.it",
+  "dataInizio": "2021-03-15 14:30:00",
+  "dataFine": "2023-03-15 14:30:00",
+  "stato": "PENDING",
+  "iat": 1688888650
+}
 ```
 
 ### Aggiorna stato delle segnalazioni (/agg-stato)
 In questo modo è possibile aggiornare lo stato delle segnalazioni in "PENDING" a "VALIDATED" o "REJECTED". Questa operazione può essere effettuata solamente dall'amministratore e può essere eseguita in modalità bulk passando più segnalazioni in una sola richiesta.
 
 ```
-TOKEN DA INSERIRE
+{
+  "idVal": [
+    8,
+    10,
+    14
+  ],
+  "idRej": [
+    9,
+    11
+  ],
+  "email": "adrianomancini@gmail.com",
+  "iat": 1688805805
+}
 ```
 
 * Gli id inseriti nei due array devono corrispondere a segnalazioni esistenti e in "PENDING"
@@ -79,7 +116,11 @@ TOKEN DA INSERIRE
 In questo modo è possibile visualizzare la graduatoria degli utenti, classificati in base al numero di coin guadagnati con le segnalazioni validate con successo. La graduatoria può essere mostrata in ordine ascendente o discendente in base a quanto specificato nel token.
 
 ```
-TOKEN DA INSERIRE
+{
+  "ordinamento": "ASC",
+  "email": "ronchini.nicola@outlook.it",
+  "iat": 1688888745
+}
 ```
 * L'ordinamento può assumere valori: "ASC", per ascendente, e "DESC, per discendete. I valori devono essere inseriti nel token così come scritti
 
@@ -87,7 +128,11 @@ TOKEN DA INSERIRE
 In questo modo è possibile generare un file contenente le statistiche sulle occorrenze delle segnalazioni presenti, distinte per tipologia, severità e stato.
 
 ```
-TOKEN DA INSERIRE
+{
+  "formato": "pdf",
+  "email": "ronchini.nicola@outlook.it",
+  "iat": 1688808335
+}
 ```
 
 * Il formato può assumere valori: "JSON", "csv", "pdf". I valori devono essere inseriti nel token così come scritti
@@ -96,7 +141,16 @@ TOKEN DA INSERIRE
 In questo modo è possibile generare un file contenente le segnalazioni "VALIDATED", distinte per tipologia e severità, presenti all'interno di un raggio di ricerca rispetto ad un punto fornito (latitudine e longitudine), con la relativa distanza. Il filtraggio può essere fatto anche per range di date (OPZIONALE).
 
 ```
-TOKEN DA INSERIRE
+{
+  "email": "ronchini.nicola@outlook.it",
+  "latitudine": 40,
+  "longitudine": 12,
+  "raggio": 1000000,
+  "dataInizio": "2021-03-15 14:30:00",
+  "dataFine": "2023-03-15 14:30:00",
+  "formato": "pdf",
+  "iat": 1688888934
+}
 ```
 * Il raggio fornito deve essere in metri
 * Il formato può assumere valori: "JSON", "csv", "pdf". I valori devono essere inseriti nel token così come scritti
@@ -105,7 +159,12 @@ TOKEN DA INSERIRE
 In questo modo è possibile generare un file contenente il numero di cluster presenti per le segnalazioni "VALIDATED", distinte per tipologia e severità. Per fare ciò si sfrutta DBSCAN come algoritmo di clustering e un raggio di ricerca fornito.
 
 ```
-TOKEN DA INSERIRE
+{
+  "email": "ronchini.nicola@outlook.it",
+  "raggio": 1000,
+  "formato": "pdf",
+  "iat": 1688888999
+}
 ```
 * Il raggio fornito deve essere in metri
 * Il formato può assumere valori: "JSON", "csv", "pdf". I valori devono essere inseriti nel token così come scritti
@@ -115,7 +174,11 @@ TOKEN DA INSERIRE
 In questo modo è possibile per un admin restituire il numero di token massimo (10) ad un utente che gli ha esauriti. I token vengono decrementati ad ogni operazione di creazione, modifica o cancellazione sul database.
 
 ```
-TOKEN DA INSERIRE
+{
+  "utente": "mariorossi@virgilio.it",
+  "email": "adrianomancini@gmail.com",
+  "iat": 1688825184
+}
 ```
 * L'email inserita deve corrispondere ad un utente con ruolo admin
 * La mail nel campo "utente" deve corrispondere ad un utente con token pari a 0
